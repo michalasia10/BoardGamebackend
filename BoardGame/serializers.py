@@ -27,9 +27,3 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 
-class AllGames(serializers.Serializer):
-    games = GameSerializer(many=True)
-
-
-
-
