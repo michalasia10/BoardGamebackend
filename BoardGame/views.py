@@ -6,13 +6,14 @@ from BoardGame.models import Project, Game
 from BoardGame.serializers import CategorySerializer, GameSerializer
 
 
+
 class CategoryList(generics.ListAPIView):
     queryset = Project.objects.all()
     serializer_class = CategorySerializer
     name = 'category-list'
 
 
-class GameList(generics.RetrieveAPIView):
+class GameList(generics.ListAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
     name = 'game-list'
