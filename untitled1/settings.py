@@ -79,20 +79,23 @@ WSGI_APPLICATION = 'untitled1.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'michalasia10',
-        'USER': 'name',
-        'PASSWORD': 'michal11',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'michalasia10',
+#         'USER': 'name',
+#         'PASSWORD': 'michal11',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 ...
-
-db_from_env = dj_database_url.config(conn_max_age=500)
+import psycopg2
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES = {'default': dj_database_url.config()}
 DATABASES['default'].update(db_from_env)
 
 
