@@ -7,11 +7,11 @@ class GameSerializer(serializers.ModelSerializer):
     # game_category = serializers.SlugRelatedField(queryset=Project.objects.all(), slug_field='name')
     class Meta:
         model = Game
-        fields = [
+        fields = (
             'name',
             'playersNumber',
             'imgUrl',
-        ]
+        )
 
 
 
@@ -19,9 +19,9 @@ class CategorySerializer(serializers.ModelSerializer):
     games = GameSerializer(many=True,read_only=True)
     class Meta:
         model = Project
-        fields = [
+        fields = (
             'projectName','games',
-        ]
+        )
 
 
 
