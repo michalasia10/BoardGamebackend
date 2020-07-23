@@ -7,7 +7,7 @@ from BoardGame.serializers import CategorySerializer, GameSerializer
 
 
 
-class CategoryList(generics.RetrieveAPIView):
+class CategoryList(generics.ListAPIView):
     queryset = Project.objects.all()
     serializer_class = CategorySerializer
     name = 'category-list'
