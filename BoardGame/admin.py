@@ -1,7 +1,7 @@
 from django.contrib import admin
-from BoardGame.models import Project,Game,Player
+from BoardGame.models import Project,Game
 
 admin.site.register(Project)
 admin.site.register(Game)
-admin.site.register(Player)
+
 # Register your models here.
