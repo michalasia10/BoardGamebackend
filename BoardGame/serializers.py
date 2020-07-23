@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project,Game,Player
+from .models import Project,Game
 
 
 
