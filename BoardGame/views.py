@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins,permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from BoardGame.models import Project, Game
-from BoardGame.serializers import CategorySerializer, GameSerializer
+from BoardGame.models import Project, Game,User
+from BoardGame.serializers import CategorySerializer, GameSerializer,UserSerializer
 
 
 
@@ -17,3 +17,12 @@ class GameList(generics.ListAPIView):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
     name = 'game-list'
+
+class UserGenericView(generics.CreateAPIView, mixins.CreateModelMixin):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny,)
+    name = 'register'
+
+
+

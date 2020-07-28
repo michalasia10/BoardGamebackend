@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project,Game
+from .models import Project,Game,User
 
 
 
@@ -23,7 +23,17 @@ class CategorySerializer(serializers.ModelSerializer):
             'projectName','games',
         )
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+        )
 
+    def create(self, validated_data):
+        user = super(UserSerializer, self).create(validated_data)
+        user.save()
+        return user
 
 
 

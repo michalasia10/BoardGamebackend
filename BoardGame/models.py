@@ -26,7 +26,15 @@ class Game(models.Model):
     def __str__(self):
         return self.name
 
+class User(models.Model):
 
+    username = models.CharField(max_length=144)
+
+    class Meta:
+        ordering = ('username',)
+
+    def __str__(self):
+        return self.username
 
 
 
