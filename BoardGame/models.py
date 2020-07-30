@@ -28,7 +28,7 @@ class Game(models.Model):
 
 class Usernames(models.Model):
 
-    username = models.CharField(max_length=144)
+    username = models.CharField(max_length=144,null=True, blank=True, default="player",unique=True)
 
     class Meta:
         ordering = ('username',)
