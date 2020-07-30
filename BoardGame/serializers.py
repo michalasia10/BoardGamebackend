@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project,Game,User
+from .models import Project,Game,Usernames
 
 
 
@@ -25,15 +25,15 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Usernames
         fields = (
             'username',
         )
 
-    def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        user.save()
-        return user
+    # def create(self, validated_data):
+    #     user = super(UserSerializer, self).create(validated_data)
+    #     user.save()
+    #     return user
 
 
 

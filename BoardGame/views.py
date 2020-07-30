@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.http import JsonResponse
 from rest_framework import generics, mixins,permissions
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
-from BoardGame.models import Project, Game,User
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from BoardGame.models import Project, Game,Usernames
 from BoardGame.serializers import CategorySerializer, GameSerializer,UserSerializer
 
 
@@ -18,11 +20,18 @@ class GameList(generics.ListAPIView):
     serializer_class = GameSerializer
     name = 'game-list'
 
-class UserGenericView(generics.CreateAPIView, mixins.CreateModelMixin):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.AllowAny,)
+class UserAPIView(APIView):
     name = 'register'
+    def get(self,request):
+        users = Usernames.objects.all()
+        serializer = UserSerializer(users,many=True)
+        return Response(serializer.data)
 
+    def post(self,request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
