@@ -28,7 +28,7 @@ class UserAPIView(APIView):
         return Response(serializer.data)
 
     def post(self,request):
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSerializer(data=request.POST)
         if serializer.is_valid():
             serializer.save(username=request.username)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
