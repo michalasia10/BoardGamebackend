@@ -18,7 +18,7 @@ class Game(models.Model):
     games = models.ForeignKey(Project,related_name='games',on_delete=models.CASCADE)
     name = models.CharField(max_length=144)
     playersNumber = models.IntegerField(default=2)
-    imgUrl = models.URLField(max_length=100)
+    imgUrl = models.URLField(max_length=400)
 
     class Meta:
         ordering = ('name',)
