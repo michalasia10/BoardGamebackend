@@ -29,6 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             'username',
         )
+        extra_kwargs = {'username': {'required': False}}
 
     # def create(self, validated_data):
     #     user = super(UserSerializer, self).create(validated_data)
