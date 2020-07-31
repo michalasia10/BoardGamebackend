@@ -21,6 +21,7 @@ class GameList(generics.ListAPIView):
     name = 'game-list'
 
 class UserAPIView(APIView):
+    parser_classes = (JSONParser,)
     name = 'register'
     def get(self,request):
         users = Usernames.objects.all()
