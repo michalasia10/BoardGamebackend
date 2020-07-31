@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from BoardGame.models import Project, Game,Usernames
 from BoardGame.serializers import CategorySerializer, GameSerializer,UserSerializer
-
+from rest_framework.parsers import JSONParser
 
 
 class CategoryList(generics.ListAPIView):
@@ -21,7 +21,7 @@ class GameList(generics.ListAPIView):
     name = 'game-list'
 
 class UserAPIView(APIView):
-    parser_classes = (JSONParser,)
+    parser_classes = [JSONParser,]
     name = 'register'
     def get(self,request):
         users = Usernames.objects.all()
