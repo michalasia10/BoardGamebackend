@@ -31,16 +31,16 @@ class UserSerializer(serializers.ModelSerializer):
             'username',
         )
 
-    # def create(self, validated_data):
-    #     # return Usernames.objects.create(**validated_data)
-    #     username = Usernames(username=validated_data['username'])
-    #     username.save()
-    #     return username
-
     def create(self, validated_data):
-        user = super(UserSerializer, self).create(validated_data)
-        user.save()
-        return user
+        # return Usernames.objects.create(**validated_data)
+        username = Usernames.objects.get_or_create(username=validated_data['username'])
+        username.save()
+        return username
+
+    # def create(self, validated_data):
+    #     user = super(UserSerializer, self).create(validated_data)
+    #     user.save()
+    #     return user
 
 
 
