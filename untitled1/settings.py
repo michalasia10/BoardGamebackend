@@ -139,7 +139,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentic',
     ),
     'DEFAULT_PARSER_CLASSES': (
-        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
     ),
    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
