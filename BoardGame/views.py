@@ -39,7 +39,7 @@ class UserAPIView(APIView):
     def post(self,request,format=None):
         body_unicode = request.body.decode('utf-8')
         data = json.loads(request.body)
-        serializer = UserSerializer(data=request.data)
+        serializer = UserSerializer(data=request.POST)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
