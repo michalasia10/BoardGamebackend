@@ -27,7 +27,7 @@ class GameList(generics.ListAPIView):
     name = 'game-list'
 
 
-@parser_classes((JSONParser,FormParser, MultiPartParser))
+# @parser_classes((JSONParser,FormParser, MultiPartParser))
 class UserAPIView(APIView):
     # parser_classes = [JSONParser,]
     name = 'register'
@@ -36,11 +36,8 @@ class UserAPIView(APIView):
         serializer = UserSerializer(users,many=True)
         return Response(serializer.data)
 
-    def post(self,request,format=None):
-        body_unicode = request.body.decode('utf-8')
-        data = json.loads(request.body).get('username')
-        print(data)
-        serializer = UserSerializer(data=data)
+    def post(self,request):
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
