@@ -29,26 +29,26 @@ class GameList(generics.ListAPIView):
 
 
 # @parser_classes((JSONParser,FormParser, MultiPartParser))
-# class UserAPIView(APIView):
-#     # parser_classes = [JSONParser,]
-#     name = 'register'
-#
-#     def get(self, request):
-#         users = Usernames.objects.all()
-#         serializer = UserSerializer(users, many=True)
-#         return Response(serializer.data)
-#
-#     def post(self, request,*args,**kwargs):
-#         serializer = UserSerializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             Usernames.objects.create(**serializer.validated_data)
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class UserAPIView(APIView):
+    # parser_classes = [JSONParser,]
+    name = 'register'
+
+    def get(self, request):
+        users = Usernames.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    def post(self, request,*args,**kwargs):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            Usernames.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #
-class UserAPIView(generics.CreateAPIView):
-    queryset = Usernames.objects.all()
-    serializer_class = UserSerializer
-    name = 'register'
-    #permission_classes = [IsAuthenticated]
+# class UserAPIView(generics.CreateAPIView):
+#     queryset = Usernames.objects.all()
+#     serializer_class = UserSerializer
+#     name = 'register'
+#     #permission_classes = [IsAuthenticated]
 
