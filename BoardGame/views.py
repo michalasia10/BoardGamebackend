@@ -49,6 +49,7 @@ class GameList(generics.ListAPIView):
 class UserAPIView(generics.CreateAPIView):
     queryset = Usernames.objects.all()
     serializer_class = UserSerializer
+    name = 'register'
     #permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
