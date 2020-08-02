@@ -27,30 +27,30 @@ class GameList(generics.ListAPIView):
     name = 'game-list'
 
 
-# @parser_classes((JSONParser,FormParser, MultiPartParser))
-# class UserAPIView(APIView):
-#     # parser_classes = [JSONParser,]
-#     name = 'register'
-#     def get(self,request):
-#         users = Usernames.objects.all()
-#         serializer = UserSerializer(users,many=True)
-#         return Response(serializer.data)
-#
-#     def post(self,request,format=None):
-#         body_unicode = request.body.decode('utf-8')
-#         data = json.loads(request.body).get('username')
-#         serializer = UserSerializer(data=data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserAPIView(generics.CreateAPIView):
-    queryset = Usernames.objects.all()
-    serializer_class = UserSerializer
+@parser_classes((JSONParser,FormParser, MultiPartParser))
+class UserAPIView(APIView):
+    # parser_classes = [JSONParser,]
     name = 'register'
-    #permission_classes = [IsAuthenticated]
+    def get(self,request):
+        users = Usernames.objects.all()
+        serializer = UserSerializer(users,many=True)
+        return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        serializer.save(username=self.request.username)
+    def post(self,request,format=None):
+        body_unicode = request.body.decode('utf-8')
+        data = json.loads(request.body).get('username')
+        serializer = UserSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+#
+# class UserAPIView(generics.CreateAPIView):
+#     queryset = Usernames.objects.all()
+#     serializer_class = UserSerializer
+#     name = 'register'
+#     #permission_classes = [IsAuthenticated]
+#
+#     def perform_create(self, serializer):
+#         serializer.save(username=self.request.username)
