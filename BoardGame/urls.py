@@ -11,5 +11,5 @@ urlpatterns = [
     path('categorylist/',views.CategoryList.as_view(), name =views.CategoryList.name),
     path('games/',views.GameList.as_view(), name =views.GameList.name),
     # path('register/',include(router.urls)),
-    path('register/',views.UserAPIView.as_view({'get': 'list', 'post': 'create'}),name=views.UserAPIView.name),
+    path('register/',views.UserAPIView.as_view(),name=views.UserAPIView.name),
   ]
