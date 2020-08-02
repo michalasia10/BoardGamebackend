@@ -32,7 +32,10 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        return Usernames.objects.create(**validated_data)
+        # return Usernames.objects.create(**validated_data)
+        username = Usernames(username=validated_data['username'])
+        username.save()
+        return username
 
     # def create(self, validated_data):
     #     user = super(UserSerializer, self).create(validated_data)
