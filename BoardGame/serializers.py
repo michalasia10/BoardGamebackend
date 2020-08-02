@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # return Usernames.objects.create(**validated_data)
-        username = Usernames.objects.get_or_create(username=validated_data['username'])
+        username = Usernames.objects.create(username=validated_data['username'])
         username.save()
         return username
 
