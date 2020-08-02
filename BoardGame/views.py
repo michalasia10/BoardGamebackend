@@ -39,6 +39,7 @@ class UserAPIView(APIView):
     def post(self,request,format=None):
         body_unicode = request.body.decode('utf-8')
         data = json.loads(request.body).get('username')
+        print(data)
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
