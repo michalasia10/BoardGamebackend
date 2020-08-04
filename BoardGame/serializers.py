@@ -24,7 +24,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'projectName','games',
         )
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Usernames
         fields = (
@@ -32,15 +32,9 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        # return Usernames.objects.create(**validated_data)
-        username = Usernames.objects.create(username=validated_data['username'])
-        username.save()
-        return username
+        return Usernames.objects.create(**validated_data)
 
-    # def create(self, validated_data):
-    #     user = super(UserSerializer, self).create(validated_data)
-    #     user.save()
-    #     return user
+
 
 
 
