@@ -19,9 +19,9 @@ from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-import debug_toolbar
+#import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('BoardGame.urls')),
-    path('__debug__',include(debug_toolbar.urls)),
+    #path('__debug__',include(debug_toolbar.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
