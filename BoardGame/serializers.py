@@ -43,7 +43,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         )
 
     def create(self, validated_data):
-        return Usernames.objects.get_or_create(**validated_data)
+        return Usernames.objects.create(**validated_data)
 
 
 
