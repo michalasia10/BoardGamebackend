@@ -35,6 +35,7 @@ class Custom409(APIException):
     default_detail = 'A conflict occurred'
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Usernames
         fields = (
