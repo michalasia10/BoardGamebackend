@@ -42,11 +42,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         )
 
     def create(self, validated_data):
-        try:
-            user = Usernames.objects.get_or_create(**validated_data)
-            return user
-        except IntegrityError as ext:
-            raise Custom409(ext)
+        return Usernames.objects.get_or_create(**validated_data)
+
 
 
 
