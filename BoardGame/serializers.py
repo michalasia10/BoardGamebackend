@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import Project,Game,Usernames
-
-
+from rest_framework.exceptions import APIException
+from rest_framework import status
+from django.db import IntegrityError
 
 class GameSerializer(serializers.ModelSerializer):
     # game_category = serializers.SlugRelatedField(queryset=Project.objects.all(), slug_field='name')
@@ -24,6 +25,15 @@ class CategorySerializer(serializers.ModelSerializer):
             'projectName','games',
         )
 
+
+
+
+
+
+class Custom409(APIException):
+    status_code = status.HTTP_409_CONFLICT
+    default_detail = 'A conflict occurred'
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Usernames
@@ -32,7 +42,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         )
 
     def create(self, validated_data):
-        return Usernames.objects.create(**validated_data)
+        try:
+            user = Usernames.objects.get_or_create(**validated_data)
+            return user
+        except IntegrityError as ext:
+            raise Custom409(ext)
+
 
 
 
