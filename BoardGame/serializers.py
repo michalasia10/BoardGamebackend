@@ -65,4 +65,3 @@ class RoomSerializer(serializers.ModelSerializer):
             'rooms',
 
         )
-

@@ -52,5 +52,3 @@ class Player(models.Model):
     class Meta:
         ordering = ('playerName',)
 
-
-
