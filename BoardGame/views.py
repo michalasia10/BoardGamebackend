@@ -2,8 +2,8 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from BoardGame.models import Project, Game, Usernames
-from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializer
+from BoardGame.models import Project, Game, User,Match
+from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializer,MatchSerializer,RoomSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework import renderers
 from rest_framework import parsers
@@ -22,6 +22,8 @@ class GameList(generics.ListAPIView):
 
 
 
+
+
 class UserAPIView(APIView):
     # parser_classes = [JSONParser,]
     permission_classes = (AllowAny,)
@@ -33,7 +35,7 @@ class UserAPIView(APIView):
     )
     renderer_classes = (renderers.JSONRenderer,)
     def get(self, request):
-        users = Usernames.objects.all()
+        users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
@@ -47,3 +49,12 @@ class UserAPIView(APIView):
             print(error.data)
         return error
 
+
+class CreateMatch(generics.ListCreateAPIView):
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
+
+
+class RoomList(generics.ListAPIView):
+    queryset = Game.objects.all()
+    serializer_class = RoomSerializer
