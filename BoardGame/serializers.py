@@ -11,7 +11,6 @@ class GameSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'playersNumber',
             'imgUrl',
         )
 
