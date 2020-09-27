@@ -17,7 +17,6 @@ class Project(models.Model):
 class Game(models.Model):
     games = models.ForeignKey(Project, related_name='games', on_delete=models.CASCADE)
     name = models.CharField(max_length=144)
-    playersNumber = models.IntegerField(default=2)
     imgUrl = models.URLField(max_length=400)
 
     class Meta:
@@ -27,11 +26,11 @@ class Game(models.Model):
         return self.name
 
 class Match(models.Model):
-    roomName = models.CharField(max_length=140, default='room',unique=True)
     game = models.ForeignKey(Game, on_delete=models.CASCADE,related_name='rooms')
+    playersNumber = models.IntegerField(default=2)
 
     class Meta:
-        ordering = ('roomName',)
+        ordering = ('game',)
 
 
 

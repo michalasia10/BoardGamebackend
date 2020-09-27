@@ -30,8 +30,9 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = (
-            'roomName',
+            'id',
             'game',
+            'playersNumber',
         )
     def create(self, validated_data):
         return Match.objects.create(**validated_data)
@@ -61,6 +62,7 @@ class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = (
+            'id',
             'name',
             'rooms',
 
