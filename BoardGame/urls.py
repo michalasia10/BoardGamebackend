@@ -8,6 +8,7 @@ urlpatterns = [
     path('creatematch/',views.CreateMatch.as_view(), name ='creatematch'),
     path('register/',views.UserAPIView.as_view(),name=views.UserAPIView.name),
     path('matches/',views.RoomList.as_view(),name='matches'),
+    path('playertes/',views.PLayerTest.as_view(),name='playertest'),
     # path('creatematch/',views.UserAPIView.as_view(),name=views.UserAPIView.name),
   ]
 
