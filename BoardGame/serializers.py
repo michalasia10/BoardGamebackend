@@ -60,15 +60,14 @@ class Players(serializers.ModelSerializer):
 
 
 class MatchSerializer(serializers.ModelSerializer):
-    players = Players(many=True)
-
+    pla = Players(many=True,read_only=True)
     class Meta:
         model = Match
         fields = (
             'id',
             'game',
             'playersNumber',
-            'players',
+            'pla',
         )
 
     def create(self, validated_data):
