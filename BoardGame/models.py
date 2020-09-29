@@ -25,14 +25,17 @@ class Game(models.Model):
     def __str__(self):
         return self.name
 
+
 class Match(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE,related_name='rooms')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='rooms')
     playersNumber = models.IntegerField(default=2)
 
     class Meta:
         ordering = ('game',)
+
     def __str__(self):
         return self.game
+
 
 class User(models.Model):
     username = models.CharField(max_length=144, blank=False, unique=True)
@@ -45,11 +48,11 @@ class User(models.Model):
 
 
 class Player(models.Model):
-    room = models.ForeignKey(Match,on_delete=models.CASCADE)
-    playerName = models.OneToOneField(User, on_delete=models.CASCADE, unique=True,primary_key=True)
+    room = models.ForeignKey(Match, on_delete=models.CASCADE)
+    playerName = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True)
 
     class Meta:
         ordering = ('playerName',)
-    def __str__(self):
-        return self.room
 
+    def __repr__(self):
+        return self.room
