@@ -50,10 +50,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return User.objects.create(**validated_data)
 
 class Players(serializers.ModelSerializer):
+    matchId = serializers.ReadOnlyField(source='room.id')
+    userId = serializers.ReadOnlyField(source='playerName.id')
     class Meta:
         model = Player
         fields = (
-            'playerName',
+            'userId','matchId',
         )
 
 class RoomSerializer(serializers.ModelSerializer):
