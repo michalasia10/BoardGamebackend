@@ -31,8 +31,8 @@ class Match(models.Model):
 
     class Meta:
         ordering = ('game',)
-
-
+    def __str__(self):
+        return self.game
 
 class User(models.Model):
     username = models.CharField(max_length=144, blank=False, unique=True)
@@ -50,4 +50,6 @@ class Player(models.Model):
 
     class Meta:
         ordering = ('playerName',)
+    def __str__(self):
+        return self.room
 
