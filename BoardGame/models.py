@@ -48,7 +48,7 @@ class User(models.Model):
 
 
 class Player(models.Model):
-    room = models.ForeignKey(Match, on_delete=models.CASCADE)
+    room = models.ForeignKey(Match, on_delete=models.CASCADE,related_name='players')
     playerName = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True)
 
     class Meta:
