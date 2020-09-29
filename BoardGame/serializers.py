@@ -59,21 +59,19 @@ class Players(serializers.ModelSerializer):
         )
 
 
-class MatchSerializer(serializers.ModelSerializer):
-    players = Players(many=True)
+class CreateMatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = (
             'id',
             'game',
             'playersNumber',
-            'players',
         )
 
     def create(self, validated_data):
         return Match.objects.create(**validated_data)
 
-class MatchSerial(serializers.ModelSerializer):
+class MatchSerializer(serializers.ModelSerializer):
     players = Players(many=True)
     class Meta:
         model = Match
@@ -86,7 +84,6 @@ class MatchSerial(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     rooms = MatchSerializer(many=True)
-
     class Meta:
         model = Game
         fields = (

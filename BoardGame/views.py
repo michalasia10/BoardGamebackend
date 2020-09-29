@@ -3,12 +3,12 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from BoardGame.models import Project, Game, User, Match, Player
-from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializer, MatchSerializer, RoomSerializer, \
+from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializer, CreateMatchSerializer, RoomSerializer, \
     Players
 from rest_framework.permissions import AllowAny
 from rest_framework import renderers
 from rest_framework import parsers
-
+from django.shortcuts import get_object_or_404
 
 class CategoryList(generics.ListAPIView):
     queryset = Project.objects.all()
@@ -51,7 +51,7 @@ class UserAPIView(APIView):
 
 class CreateMatch(generics.ListCreateAPIView):
     queryset = Match.objects.all()
-    serializer_class = MatchSerializer
+    serializer_class = CreateMatchSerializer
 
 
 class RoomList(generics.ListAPIView):
@@ -59,6 +59,13 @@ class RoomList(generics.ListAPIView):
     serializer_class = RoomSerializer
 
 
-class PLayerTest(generics.ListAPIView):
-    queryset = Player.objects.all()
-    serializer_class = Players
+class PlayerDelete(APIView):
+    def get(self,request,pk):
+        player = get_object_or_404(Player,pk=pk)
+        serializer = Players(player)
+        return Response(serializer.data)
+    def delete(self,request,pk):
+        player = get_object_or_404(Player,pk=pk)
+        player.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
