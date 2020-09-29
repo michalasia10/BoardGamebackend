@@ -1,0 +1,7 @@
+Watching for file changes with StatReloader
+Not Acceptable: /register/
+"POST /register/ HTTP/1.1" 406 57
+Not Acceptable: /register/
+"POST /register/ HTTP/1.1" 406 57
+"GET /register/ HTTP/1.1" 200 7215
+/Users/michallasia/Dropbox/untitled1/untitled1/local_settings.py changed, reloading.
