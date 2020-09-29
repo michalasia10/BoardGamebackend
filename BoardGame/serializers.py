@@ -60,7 +60,7 @@ class Players(serializers.ModelSerializer):
 
 
 class MatchSerializer(serializers.ModelSerializer):
-    players = Players(many=True,read_only=True)
+    players = Players(many=True)
     class Meta:
         model = Match
         fields = (
@@ -73,6 +73,16 @@ class MatchSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Match.objects.create(**validated_data)
 
+class MatchSerial(serializers.ModelSerializer):
+    players = Players(many=True)
+    class Meta:
+        model = Match
+        fields = (
+            'id',
+            'game',
+            'playersNumber',
+            'players',
+        )
 
 class RoomSerializer(serializers.ModelSerializer):
     rooms = MatchSerializer(many=True)

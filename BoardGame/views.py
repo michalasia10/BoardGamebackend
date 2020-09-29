@@ -53,6 +53,9 @@ class CreateMatch(generics.ListCreateAPIView):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
 
+class Match(generics.ListAPIView):
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
 
 class RoomList(generics.ListAPIView):
     queryset = Game.objects.all()
