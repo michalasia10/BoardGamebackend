@@ -23,7 +23,7 @@ class Game(models.Model):
         ordering = ('name',)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 
 class Match(models.Model):
@@ -34,7 +34,7 @@ class Match(models.Model):
         ordering = ('game',)
 
     def __str__(self):
-        return self.game
+        return str(self.game)
 
 
 class User(models.Model):
@@ -44,7 +44,7 @@ class User(models.Model):
         ordering = ('username',)
 
     def __str__(self):
-        return self.username
+        return str(self.username)
 
 
 class Player(models.Model):
@@ -54,5 +54,5 @@ class Player(models.Model):
     class Meta:
         ordering = ('playerName',)
 
-    def __repr__(self):
-        return self.room
+    def __str__(self):
+        return str(self.room)
