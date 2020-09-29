@@ -77,12 +77,12 @@ class MatchSerial(serializers.ModelSerializer):
     players = Players(many=True)
     class Meta:
         model = Match
-        fields = (
+        fields = [
             'id',
             'game',
             'playersNumber',
             'players',
-        )
+        ]
 
 class RoomSerializer(serializers.ModelSerializer):
     rooms = MatchSerializer(many=True)
