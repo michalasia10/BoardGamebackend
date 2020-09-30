@@ -9,7 +9,7 @@ urlpatterns = [
     path('register/',views.UserAPIView.as_view(),name=views.UserAPIView.name),
     path('matches/',views.RoomList.as_view(),name='matches'),
     path('leave-match/<int:pk>',views.PlayerDelete.as_view()),
-    path('join-match/<int:matchID/<int:userID>',views.PlayerJoin.as_view()),
+    path('join-match/<int:matchID>/<int:userID>',views.PlayerJoin.as_view()),
     # path('creatematch/',views.UserAPIView.as_view(),name=views.UserAPIView.name),
   ]
 
