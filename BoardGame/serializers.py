@@ -31,7 +31,7 @@ class CategorySerializer(serializers.ModelSerializer):
 #         fields = (
 #             'id',
 #             'game',
-#             'playersNumber',
+#             'maxPlayers',
 #         )
 #     def create(self, validated_data):
 #         return Match.objects.create(**validated_data)
@@ -76,7 +76,7 @@ class CreateMatchSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'game',
-            'playersNumber',
+            'maxPlayers',
         )
 
     def create(self, validated_data):
@@ -88,7 +88,7 @@ class MatchSerializer(serializers.ModelSerializer):
         model = Match
         fields = [
             'id',
-            'playersNumber',
+            'maxPlayers',
             'players',
         ]
 
