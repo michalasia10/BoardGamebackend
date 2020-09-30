@@ -76,7 +76,7 @@ class PlayerJoin(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = Players(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(matchID = request.matchID,userID=request.userID)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
