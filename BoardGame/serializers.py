@@ -60,7 +60,6 @@ class Players(serializers.ModelSerializer):
 
 class PlayersForMatch(serializers.ModelSerializer):
     userId = serializers.ReadOnlyField(source='playerName.id')
-    playerName = serializers.CharField(source='playerName')
 
     class Meta:
         model = Player
