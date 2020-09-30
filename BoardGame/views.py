@@ -71,14 +71,14 @@ class PlayerDelete(APIView):
 
 class PlayerJoin(APIView):
     def get(self, request):
-        users = get_object_or_404(Player,matchID=request.matchID,userID=request.userID)
+        users = Player.objects.all()
         serializer = Players(users, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         serializer = Players(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(matchID = request.matchID,userID=request.userID)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             error = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
