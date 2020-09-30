@@ -70,6 +70,15 @@ class PlayerDelete(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class PlayerJoin(APIView):
+    permission_classes = (AllowAny,)
+    name = 'register'
+    parser_classes = (
+        parsers.FormParser,
+        parsers.MultiPartParser,
+        parsers.JSONParser,
+    )
+    renderer_classes = (renderers.JSONRenderer,)
+
     def get(self, request):
         users = Player.objects.all()
         serializer = Players(users, many=True)
