@@ -57,6 +57,9 @@ class Players(serializers.ModelSerializer):
         fields = (
             'userId', 'matchId',
         )
+    def create(self, validated_data):
+        return Player.objects.create(**validated_data)
+
 
 class PlayersForMatch(serializers.ModelSerializer):
     userId = serializers.ReadOnlyField(source='playerName.id')
