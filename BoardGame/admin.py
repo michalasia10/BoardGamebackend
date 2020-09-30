@@ -7,8 +7,8 @@ admin.site.register(User)
 # admin.site.register(Player)
 @admin.register(Match)
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('game','playersNumber')
-    search_fields = ('game','playersNumber')
+    list_display = ('game','maxPlayers')
+    search_fields = ('game','maxPlayers')
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
