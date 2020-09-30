@@ -55,4 +55,4 @@ class Player(models.Model):
         ordering = ('playerName',)
 
     def __str__(self):
-        return self.playerName
+        return str(self.playerName)
