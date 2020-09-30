@@ -58,6 +58,17 @@ class Players(serializers.ModelSerializer):
             'userId', 'matchId',
         )
 
+class PlayersForMatch(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='playerName')
+    userId = serializers.ReadOnlyField(source='playerName.id')
+
+    class Meta:
+        model = Player
+        fields = (
+            'userId', 'username',
+        )
+
+
 
 class CreateMatchSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,22 +83,21 @@ class CreateMatchSerializer(serializers.ModelSerializer):
         return Match.objects.create(**validated_data)
 
 class MatchSerializer(serializers.ModelSerializer):
-    players = Players(many=True)
+    players = PlayersForMatch(many=True)
     class Meta:
         model = Match
         fields = [
             'id',
-            'game',
             'playersNumber',
             'players',
         ]
 
 class RoomSerializer(serializers.ModelSerializer):
-    rooms = MatchSerializer(many=True)
+    matches = MatchSerializer(many=True)
     class Meta:
         model = Game
         fields = (
             'id',
             'name',
-            'rooms',
+            'matches',
         )

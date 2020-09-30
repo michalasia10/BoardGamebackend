@@ -27,7 +27,7 @@ class Game(models.Model):
 
 
 class Match(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='rooms')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='matches')
     playersNumber = models.IntegerField(default=2)
 
     class Meta:
