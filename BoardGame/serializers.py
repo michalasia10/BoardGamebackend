@@ -49,8 +49,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class Players(serializers.ModelSerializer):
-    matchId = serializers.ReadOnlyField(source='room.id')
-    userId = serializers.ReadOnlyField(source='playerName.id')
+    matchId = serializers.IntegerField(source='room.id')
+    userId = serializers.IntegerField(source='playerName.id')
 
     class Meta:
         model = Player
