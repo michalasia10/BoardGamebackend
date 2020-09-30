@@ -72,7 +72,7 @@ class PlayerDelete(APIView):
 class PlayerJoin(APIView):
     def get(self, request):
         users = get_object_or_404(Player,matchID=request.matchID,userID=request.userID)
-        serializer = UserSerializer(users, many=True)
+        serializer = Players(users, many=True)
         return Response(serializer.data)
 
     def post(self, request):
