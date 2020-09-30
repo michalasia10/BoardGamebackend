@@ -59,13 +59,12 @@ class Players(serializers.ModelSerializer):
         )
 
 class PlayersForMatch(serializers.ModelSerializer):
-    username = serializers.ReadOnlyField(source='playerName')
     userId = serializers.ReadOnlyField(source='playerName.id')
 
     class Meta:
         model = Player
         fields = (
-            'userId', 'username',
+            'userId', 'playerName',
         )
 
 
