@@ -22,7 +22,7 @@ class CategorySerializer(serializers.ModelSerializer):
         )
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializerPost(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = (
@@ -31,6 +31,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create(**validated_data)
+
+
+class UserSerializerGet(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'username',
+        )
 
 
 class PlayersSerializerCreate(serializers.ModelSerializer):
