@@ -10,13 +10,13 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Match)
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('game','maxPlayers')
-    search_fields = ('game','maxPlayers')
+    list_display = ('id','game','maxPlayers')
+    search_fields = ('id','game','maxPlayers')
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ('room','playerName')
-    search_fields = ('room','playerName')
+    list_display = ('match','playerName')
+    search_fields = ('match','playerName')
 # admin.site.register(Match)
 
 

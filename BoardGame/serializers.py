@@ -1,8 +1,5 @@
 from rest_framework import serializers
 from .models import Project, Game, User, Match, Player
-from rest_framework.exceptions import APIException
-from rest_framework import status
-from django.db import IntegrityError
 
 
 class GameSerializer(serializers.ModelSerializer):
@@ -25,18 +22,6 @@ class CategorySerializer(serializers.ModelSerializer):
         )
 
 
-# class MatchSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Match
-#         fields = (
-#             'id',
-#             'game',
-#             'maxPlayers',
-#         )
-#     def create(self, validated_data):
-#         return Match.objects.create(**validated_data)
-
-
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -48,8 +33,22 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return User.objects.create(**validated_data)
 
 
-class Players(serializers.ModelSerializer):
-    matchId = serializers.IntegerField(source='room.id')
+class PlayersSerializerCreate(serializers.ModelSerializer):
+    match = serializers.PrimaryKeyRelatedField(many=False, queryset=Match.objects.all())
+    playerName = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
+
+    class Meta:
+        model = Player
+        fields = (
+            'match', 'playerName',
+        )
+
+    def create(self, validated_data):
+        return Player.objects.create(match=validated_data['match'], playerName=validated_data['playerName'])
+
+
+class PlayersSerializerDetail(serializers.ModelSerializer):
+    matchId = serializers.IntegerField(source='match.id')
     userId = serializers.IntegerField(source='playerName.id')
 
     class Meta:
@@ -57,11 +56,9 @@ class Players(serializers.ModelSerializer):
         fields = (
             'userId', 'matchId',
         )
-    def create(self, validated_data):
-        return Player.objects.create(**validated_data)
 
 
-class PlayersForMatch(serializers.ModelSerializer):
+class PlayersSerializerForMatch(serializers.ModelSerializer):
     userId = serializers.ReadOnlyField(source='playerName.id')
     playerName = serializers.StringRelatedField()
 
@@ -70,7 +67,6 @@ class PlayersForMatch(serializers.ModelSerializer):
         fields = (
             'userId', 'playerName',
         )
-
 
 
 class CreateMatchSerializer(serializers.ModelSerializer):
@@ -85,8 +81,10 @@ class CreateMatchSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Match.objects.create(**validated_data)
 
+
 class MatchSerializer(serializers.ModelSerializer):
-    players = PlayersForMatch(many=True)
+    players = PlayersSerializerForMatch(many=True)
+
     class Meta:
         model = Match
         fields = [
@@ -95,8 +93,10 @@ class MatchSerializer(serializers.ModelSerializer):
             'players',
         ]
 
+
 class RoomSerializer(serializers.ModelSerializer):
     matches = MatchSerializer(many=True)
+
     class Meta:
         model = Game
         fields = (

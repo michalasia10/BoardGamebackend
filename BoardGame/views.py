@@ -1,14 +1,16 @@
 from rest_framework import generics
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from BoardGame.models import Project, Game, User, Match, Player
-from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializer, CreateMatchSerializer, RoomSerializer, \
-    Players
+from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializer, CreateMatchSerializer, \
+    RoomSerializer, \
+    PlayersSerializerCreate,PlayersSerializerDetail
 from rest_framework.permissions import AllowAny
 from rest_framework import renderers
 from rest_framework import parsers
 from django.shortcuts import get_object_or_404
+
 
 class CategoryList(generics.ListAPIView):
     queryset = Project.objects.all()
@@ -60,36 +62,19 @@ class RoomList(generics.ListAPIView):
 
 
 class PlayerDelete(APIView):
-    def get(self,request,pk):
-        player = get_object_or_404(Player,pk=pk)
-        serializer = Players(player)
+    def get(self, request, pk):
+        player = get_object_or_404(Player, pk=pk)
+        serializer = PlayersSerializerDetail(player)
         return Response(serializer.data)
-    def delete(self,request,pk):
-        player = get_object_or_404(Player,pk=pk)
+
+    def delete(self, request, pk):
+        player = get_object_or_404(Player, pk=pk)
         player.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class PlayerJoin(APIView):
-    permission_classes = (AllowAny,)
-    name = 'register'
-    parser_classes = (
-        parsers.FormParser,
-        parsers.MultiPartParser,
-        parsers.JSONParser,
-    )
-    renderer_classes = (renderers.JSONRenderer,)
 
-    def get(self, request):
-        users = Player.objects.all()
-        serializer = Players(users, many=True)
-        return Response(serializer.data)
+class PlayerJoin(generics.ListCreateAPIView):
+    queryset = Player.objects.all()
+    serializer_class = PlayersSerializerCreate
 
-    def post(self, request):
-        serializer = Players(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            error = Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            print(error.data)
-        return error
+

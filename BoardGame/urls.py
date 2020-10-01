@@ -10,6 +10,5 @@ urlpatterns = [
     path('matches/',views.RoomList.as_view(),name='matches'),
     path('leave-match/<int:pk>',views.PlayerDelete.as_view()),
     path('join-match/',views.PlayerJoin.as_view()),
-    # path('creatematch/',views.UserAPIView.as_view(),name=views.UserAPIView.name),
   ]
 
