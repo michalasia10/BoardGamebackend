@@ -36,7 +36,14 @@ class CreateMatch(generics.ListCreateAPIView):
     serializer_class = CreateMatchSerializer
 
 
-class RoomList(generics.ListAPIView):
+class RoomList(APIView):
+    def get(self, request, pk):
+        game = get_object_or_404(Game, pk=pk)
+        serializer = RoomSerializer(game)
+        return Response(serializer.data)
+
+
+class AllMatches(generics.ListAPIView):
     queryset = Game.objects.all()
     serializer_class = RoomSerializer
 

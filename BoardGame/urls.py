@@ -8,7 +8,8 @@ urlpatterns = [
     path('creatematch/',views.CreateMatch.as_view(), name ='creatematch'),
     path('register/',views.RegisterUser.as_view()),
     path('users/',views.RegisterUser.as_view()),
-    path('matches/',views.RoomList.as_view(),name='matches'),
+    path('matches/<int:pk>',views.RoomList.as_view()),
+    path('allmatches',views.AllMatches.as_view()),
     path('leave-match/<int:pk>',views.PlayerDelete.as_view()),
     path('join-match/',views.PlayerJoin.as_view()),
   ]
