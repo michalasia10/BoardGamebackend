@@ -88,7 +88,7 @@ class CreateMatchSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        return Match.objects.create(**validated_data)
+        return Match.objects.create(game=validated_data.get('game'),maxPlayers=validated_data.get('maxPlayers'))
 
 
 class MatchSerializer(serializers.ModelSerializer):
