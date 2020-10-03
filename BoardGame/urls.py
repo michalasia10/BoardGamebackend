@@ -6,7 +6,6 @@ urlpatterns = [
     path('categorylist/',views.CategoryList.as_view(), name =views.CategoryList.name),
     path('games/',views.GameList.as_view(), name =views.GameList.name),
     path('creatematch/',views.CreateMatch.as_view(), name ='creatematch'),
-    path('creatematchc/',views.CreateMatchc.as_view()),
     path('register/',views.RegisterUser.as_view()),
     path('users/',views.RegisterUser.as_view()),
     path('matches/<int:pk>',views.RoomList.as_view()),
