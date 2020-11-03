@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/3.0/howto/deployment/asgi/
 import os
 
 from channels.routing import get_default_application
+from channels.layers import get_channel_layer
 import django
 
 from channels.routing import ProtocolTypeRouter,URLRouter
