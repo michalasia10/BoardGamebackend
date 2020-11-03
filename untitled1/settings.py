@@ -123,7 +123,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
