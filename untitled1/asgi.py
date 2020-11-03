@@ -12,6 +12,11 @@ import os
 from channels.routing import get_default_application
 import django
 
+from channels.routing import ProtocolTypeRouter,URLRouter
+from django.core.asgi import get_asgi_application
+from channels.auth import AuthMiddlewareStack
+import BoardGame.routing
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'untitled1.settings')
 django.setup()
 application = ProtocolTypeRouter({
