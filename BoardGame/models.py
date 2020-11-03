@@ -1,4 +1,10 @@
 from django.db import models
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+from django.db.models.signals import post_save
+from django.core.serializers.json import DjangoJSONEncoder
+from django.forms.models import model_to_dict
+import json
 
 
 # Create your models here.
@@ -29,12 +35,27 @@ class Game(models.Model):
 class Match(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='matches')
     maxPlayers = models.IntegerField(default=2)
+    state = models.CharField(max_length=144,default='---------')
 
     class Meta:
         ordering = ('game',)
 
     def __str__(self):
         return str(self.game)
+
+
+def save_post(sender, instance, **kwargs):
+    chanel = get_channel_layer()
+    group = instance.pk
+    data = model_to_dict(instance)
+    json_data = json.dumps(data, cls=DjangoJSONEncoder)
+    async_to_sync(chanel.group_send)(
+        f'{group}',
+        {'type': 'newstate', 'data': json_data}
+    )
+
+
+post_save.connect(save_post, sender=Match, dispatch_uid='save_post')
 
 
 class User(models.Model):

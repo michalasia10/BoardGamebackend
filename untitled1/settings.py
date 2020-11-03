@@ -149,6 +149,16 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG':{
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        }
+    }
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

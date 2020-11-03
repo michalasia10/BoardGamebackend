@@ -79,6 +79,7 @@ class PlayersSerializerForMatch(serializers.ModelSerializer):
 
 
 class CreateMatchSerializer(serializers.ModelSerializer):
+    # game = serializers.PrimaryKeyRelatedField(many=False,queryset=Game.objects.all())
     class Meta:
         model = Match
         fields = (
@@ -88,7 +89,7 @@ class CreateMatchSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        return Match.objects.create(game=validated_data.get('game'),maxPlayers=validated_data.get('maxPlayers'))
+        return Match.objects.create(**validated_data)
 
 
 class MatchSerializer(serializers.ModelSerializer):
