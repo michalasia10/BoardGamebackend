@@ -19,11 +19,12 @@ import BoardGame.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'untitled1.settings')
 django.setup()
-application = ProtocolTypeRouter({
-    'http':get_asgi_application(),
-    'webscoket':AuthMiddlewareStack(
-        URLRouter(
-            BoardGame.routing.websocket_urlpatterns
-        )
-    )
-})
+# application = ProtocolTypeRouter({
+#     'http':get_asgi_application(),
+#     'webscoket':AuthMiddlewareStack(
+#         URLRouter(
+#             BoardGame.routing.websocket_urlpatterns
+#         )
+#     )
+# })
+application = get_default_application()
