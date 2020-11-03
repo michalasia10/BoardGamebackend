@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'BoardGame.apps.BoardgameConfig',
     'rest_framework',
     'corsheaders',
+    'channels',
 
 ]
 
