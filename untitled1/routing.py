@@ -10,4 +10,4 @@ application = ProtocolTypeRouter({
         )
     )
 })
-channel_routing = {}
+# channel_routing = {}
