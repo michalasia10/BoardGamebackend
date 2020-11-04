@@ -8,12 +8,14 @@ from django.shortcuts import get_object_or_404
 
 class RoomConsumer(AsyncWebsocketConsumer):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.room_name = self.scope['url_route']['kwargs']['match_pk']
-        self.room_group_name = self.room_name
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.room_name = self.scope['url_route']['kwargs']['match_pk']
+#         self.room_group_name = self.room_name
 
     async def websocket_connect(self, event):
+        self.room_name = self.scope['url_route']['kwargs']['match_pk']
+        self.room_group_name = self.room_name
         print(f"Connected, typ of connect {event}")
         match = await self.get_match(pk=self.room_name)
         # Join room group
