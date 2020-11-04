@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from BoardGame.models import Project, Game, User, Match, Player
 from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializerGet, UserSerializerPost,CreateMatchSerializer, \
     RoomSerializer, \
-    PlayersSerializerCreate,PlayersSerializerDetail
+    PlayersSerializerCreate,PlayersSerializerDetail,MatchSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework import renderers
 from rest_framework import parsers
@@ -64,4 +64,9 @@ class PlayerJoin(generics.ListCreateAPIView):
     queryset = Player.objects.all()
     serializer_class = PlayersSerializerCreate
 
+class RoomDetail(APIView):
+    def get(self, request, pk):
+        match = get_object_or_404(Match, pk=pk)
+        serializer = MatchSerializer(match)
+        return Response(serializer.data)
 

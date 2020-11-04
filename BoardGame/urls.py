@@ -12,5 +12,6 @@ urlpatterns = [
     path('allmatches',views.AllMatches.as_view()),
     path('leave-match/<int:pk>',views.PlayerDelete.as_view()),
     path('join-match/',views.PlayerJoin.as_view()),
+    path('roomdetail/<int:pk>',views.RoomDetail.as_view())
   ]
 
