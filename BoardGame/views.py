@@ -3,14 +3,16 @@ from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from BoardGame.models import Project, Game, User, Match, Player
-from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializerGet, UserSerializerPost,CreateMatchSerializer, \
+from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializerGet, UserSerializerPost, \
+    CreateMatchSerializer, \
     RoomSerializer, \
-    PlayersSerializerCreate,PlayersSerializerDetail,MatchSerializer
+    PlayersSerializerCreate, PlayersSerializerDetail, MatchSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework import renderers
 from rest_framework import parsers
 from django.shortcuts import get_object_or_404
 from .multiserializer.multiserializer import MethodSerializerView
+
 
 class CategoryList(generics.ListAPIView):
     queryset = Project.objects.all()
@@ -24,12 +26,13 @@ class GameList(generics.ListAPIView):
     name = 'game-list'
 
 
-class RegisterUser(MethodSerializerView,generics.ListCreateAPIView):
+class RegisterUser(MethodSerializerView, generics.ListCreateAPIView):
     queryset = User.objects.all()
     method_serializer_classes = {
         'GET': UserSerializerGet,
         'POST': UserSerializerPost
     }
+
 
 class CreateMatch(generics.ListCreateAPIView):
     queryset = Match.objects.all()
@@ -64,9 +67,9 @@ class PlayerJoin(generics.ListCreateAPIView):
     queryset = Player.objects.all()
     serializer_class = PlayersSerializerCreate
 
+
 class RoomDetail(APIView):
     def get(self, request, pk):
         match = get_object_or_404(Match, pk=pk)
         serializer = MatchSerializer(match)
         return Response(serializer.data)
-
