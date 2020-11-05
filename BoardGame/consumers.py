@@ -10,8 +10,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.room_group_name = self.room_name
         self.room_name = self.scope['url_route']['kwargs']['match_pk']
+        self.room_group_name = self.room_name
 
     async def websocket_connect(self, event):
         print(f"Connected, typ of connect {event}")
