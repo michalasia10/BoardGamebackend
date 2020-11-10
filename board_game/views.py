@@ -2,14 +2,11 @@ from rest_framework import generics
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from board_game.models import Project, Game, User, Match, Player
-from board_game.serializers import CategorySerializer, GameSerializer, UserSerializerGet, UserSerializerPost, \
+from .models import Project, Game, User, Match, Player
+from .serializers import CategorySerializer, GameSerializer, UserSerializerGet, UserSerializerPost, \
     CreateMatchSerializer, \
     RoomSerializer, \
     PlayersSerializerCreate, PlayersSerializerDetail, MatchSerializer
-from rest_framework.permissions import AllowAny
-from rest_framework import renderers
-from rest_framework import parsers
 from django.shortcuts import get_object_or_404
 from .multiserializer.multiserializer import MethodSerializerView
 

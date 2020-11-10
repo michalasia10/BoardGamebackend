@@ -1,5 +1,5 @@
 from django.contrib import admin
-from board_game.models import Project,Game,User,Player,Match
+from .models import Project,Game,User,Player,Match
 
 admin.site.register(Project)
 admin.site.register(Game)
