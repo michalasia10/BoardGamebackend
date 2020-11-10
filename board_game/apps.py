@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class BoardgameConfig(AppConfig):
-    name = 'BoardGame'
+    name = 'board_game'

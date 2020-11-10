@@ -2,8 +2,8 @@ from rest_framework import generics
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from BoardGame.models import Project, Game, User, Match, Player
-from BoardGame.serializers import CategorySerializer, GameSerializer, UserSerializerGet, UserSerializerPost, \
+from board_game.models import Project, Game, User, Match, Player
+from board_game.serializers import CategorySerializer, GameSerializer, UserSerializerGet, UserSerializerPost, \
     CreateMatchSerializer, \
     RoomSerializer, \
     PlayersSerializerCreate, PlayersSerializerDetail, MatchSerializer

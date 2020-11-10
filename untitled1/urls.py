@@ -22,6 +22,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 #import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('BoardGame.urls')),
+    path('', include('board_game.urls')),
     #path('__debug__',include(debug_toolbar.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

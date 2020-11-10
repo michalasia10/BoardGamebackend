@@ -1,12 +1,12 @@
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter,URLRouter
-import  BoardGame.routing
+import  board_game.routing
 from .wsgi import *
 
 application = ProtocolTypeRouter({
     'websocket':  AuthMiddlewareStack(
         URLRouter(
-            BoardGame.routing.websocket_urlpatterns
+            board_game.routing.websocket_urlpatterns
         )
     )
 })

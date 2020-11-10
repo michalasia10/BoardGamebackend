@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'BoardGame.apps.BoardgameConfig',
+    'board_game.apps.BoardgameConfig',
     'rest_framework',
     'corsheaders',
     'channels',

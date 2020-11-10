@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('playersNumber', models.IntegerField(default=2)),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rooms', to='BoardGame.Game')),
+                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rooms', to='board_game.Game')),
             ],
             options={
                 'ordering': ('game',),
@@ -57,13 +57,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='game',
             name='games',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='games', to='BoardGame.Project'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='games', to='board_game.Project'),
         ),
         migrations.CreateModel(
             name='Player',
             fields=[
-                ('playerName', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='BoardGame.User')),
-                ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='BoardGame.Match')),
+                ('playerName', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='board_game.User')),
+                ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='board_game.Match')),
             ],
             options={
                 'ordering': ('playerName',),

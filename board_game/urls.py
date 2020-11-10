@@ -1,4 +1,4 @@
-from BoardGame import views
+from board_game import views
 from django.urls import path
 
 
