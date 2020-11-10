@@ -86,9 +86,9 @@ ASGI_APPLICATION = 'untitled1.routing.application'
 import psycopg2
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES = {'default': dj_database_url.config()}
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
