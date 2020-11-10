@@ -11,7 +11,9 @@ import json
 
 
 class Project(models.Model):
-    projectName = models.CharField(max_length=100)
+    projectName = models.CharField(max_length=100,
+                                   help_text='Category of games',
+                                   verbose_name='game category')
 
     class Meta:
         ordering = ('projectName',)
@@ -21,9 +23,16 @@ class Project(models.Model):
 
 
 class Game(models.Model):
-    games = models.ForeignKey(Project, related_name='games', on_delete=models.CASCADE)
-    name = models.CharField(max_length=144)
-    imgUrl = models.URLField(max_length=400)
+    games = models.ForeignKey(Project, related_name='games',
+                              on_delete=models.CASCADE,
+                              help_text='Category of game which belong to',
+                              verbose_name='game category')
+    name = models.CharField(max_length=144,
+                            help_text='Game name',
+                            verbose_name='game name')
+    imgUrl = models.URLField(max_length=400,
+                             help_text='URL to game image for logo',
+                             verbose_name='game\'s logo url')
 
     class Meta:
         ordering = ('name',)
@@ -33,9 +42,16 @@ class Game(models.Model):
 
 
 class Match(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='matches')
-    maxPlayers = models.IntegerField(default=2)
-    state = models.CharField(max_length=144,default='---------')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE,
+                             related_name='matches',
+                             help_text='Type of game which match belong to',
+                             verbose_name='type of game')
+    maxPlayers = models.IntegerField(default=2,
+                                     help_text='Number of max players in each game',
+                                     verbose_name='max players in game')
+    state = models.CharField(max_length=144, default='---------',
+                             help_text='State of board',
+                             verbose_name='state of board')
 
     class Meta:
         ordering = ('game',)
@@ -69,8 +85,16 @@ class User(models.Model):
 
 
 class Player(models.Model):
-    match = models.ForeignKey(Match, on_delete=models.CASCADE,related_name='players')
-    playerName = models.OneToOneField(User, on_delete=models.CASCADE, unique=True, primary_key=True)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE,
+                              related_name='players',
+                              help_text='choose match/room u want to join',
+                              verbose_name='match/room')
+    playerName = models.OneToOneField(User, on_delete=models.CASCADE,
+                                      unique=True,
+                                      primary_key=True,
+                                      help_text='user will be a player ',
+                                      verbose_name='player',)
+
 
     class Meta:
         ordering = ('playerName',)
