@@ -34,12 +34,11 @@ class RoomConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-#     async def receive(self, text_data, **kwargs):
-#         print(f"New state of the game board: {text_data}")
-#         self.text = text_data
-#         update_content = await self.get_match(pk=self.room_name, update=True)
-#         # await self.send(text_data=json.dumps({'cos':message}))
-#         print(f"Updated content after ORM.update is {update_content}")
+    async def receive(self, text_data, **kwargs):
+        print(f"New state of the game board: {text_data}")
+        self.text = text_data
+        update_content = await self.get_match(pk=self.room_name, update=True)
+        print(f"Updated content after ORM.update is {update_content}")
 
     async def newstate(self, event):
         dicta = json.loads(event['data'])
