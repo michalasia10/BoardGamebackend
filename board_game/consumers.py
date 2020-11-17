@@ -52,6 +52,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         print(f' Automatically updated database content {dicta}')
 
 
+
     async def message(self, event):
         content = event['type']
         something = event["data"]
