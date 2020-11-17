@@ -4,7 +4,10 @@ import json
 from channels.db import database_sync_to_async
 from .serializers import MatchSerializer
 from django.shortcuts import get_object_or_404
-
+from django.db.models.signals import post_save
+from django.forms.models import model_to_dict
+from django.core.serializers.json import DjangoJSONEncoder
+from asgiref.sync import async_to_sync
 
 class RoomConsumer(AsyncWebsocketConsumer):
 
@@ -40,6 +43,17 @@ class RoomConsumer(AsyncWebsocketConsumer):
         self.text = state['boardState']
         update_content = await self.get_match(pk=self.room_name, update=True)
         print(f"Updated content after ORM.update is {update_content}")
+
+    def save_post(self,sender, instance, **kwargs):
+        group = instance.pk
+        data = model_to_dict(instance)
+        json_data = json.dumps(data, cls=DjangoJSONEncoder)
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {'type': 'newstate', 'data': json_data}
+        )
+
+    post_save.connect(save_post, sender=Match, dispatch_uid='save_post')
 
     async def newstate(self, event):
         dicta = json.loads(event['data'])
