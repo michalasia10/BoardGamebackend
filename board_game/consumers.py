@@ -35,8 +35,9 @@ class RoomConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data, **kwargs):
-        print(f"New state of the game board: {text_data}")
-        self.text = text_data
+        state = json.loads(text_data)
+        print(f"JSON: {state}\nNew state of the game board: {state['boardState']}")
+        self.text = state['boardState']
         update_content = await self.get_match(pk=self.room_name, update=True)
         print(f"Updated content after ORM.update is {update_content}")
 
