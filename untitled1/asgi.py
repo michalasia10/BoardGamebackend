@@ -11,12 +11,11 @@ import os
 
 from channels.routing import get_default_application
 from channels.layers import get_channel_layer
-
 import django
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'untitled1.settings')
-os.environ['ASGI_THREADS']="4"
+# os.environ['ASGI_THREADS']="4"
 django.setup()
-application = get_default_application()
+# application = get_default_application()
 # channel_layer = get_channel_layer()
