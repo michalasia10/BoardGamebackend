@@ -41,17 +41,11 @@ class RoomConsumer(AsyncWebsocketConsumer):
         update_content = await self.get_match(pk=self.room_name, update=True)
         print(f"Updated content after ORM.update is {update_content}")
 
-
-
     async def newstate(self, event):
         dicta = json.loads(event['data'])
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {'type':'message',
-            'data':json.dumps(dicta)})
+
+        await self.send(json.dumps(dicta))
         print(f' Automatically updated database content {dicta}')
-
-
 
     async def message(self, event):
         content = event['type']

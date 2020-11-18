@@ -61,10 +61,12 @@ class Match(models.Model):
 
 def save_post(sender, instance, **kwargs):
     chanel = get_channel_layer()
+    print(chanel)
     group = instance.pk
     data = model_to_dict(instance)
     json_data = json.dumps(data, cls=DjangoJSONEncoder)
-    print('GROUP:',group)
+    print('GROUP:',group,json_data)
+    print(chanel)
     async_to_sync(chanel.group_send)(
         f'{group}',
         {'type': 'newstate', 'data': json_data}
