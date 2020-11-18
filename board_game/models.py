@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.core.serializers.json import DjangoJSONEncoder
 from django.forms.models import model_to_dict
 import json
-
+import asyncio
 
 # Create your models here.
 
@@ -64,13 +64,15 @@ def save_post(sender, instance, **kwargs):
     print(chanel)
     group = instance.pk
     data = model_to_dict(instance)
+    loop = asyncio.new_event_loop()
     json_data = json.dumps(data, cls=DjangoJSONEncoder)
     print('GROUP:',group,json_data)
-    print(chanel)
-    async_to_sync(chanel.group_send)(
+
+    coroutine = async_to_sync(chanel.group_send)(
         f'{group}',
         {'type': 'newstate', 'data': json_data}
     )
+    asyncio.set_event_loop(coroutine)
 
 
 post_save.connect(save_post, sender=Match, dispatch_uid='save_post')
