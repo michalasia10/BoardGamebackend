@@ -68,7 +68,7 @@ def save_post(sender, instance, **kwargs):
     print('GROUP:',group,json_data)
     print(chanel)
     async_to_sync(chanel.group_send)(
-        f'{group}',
+        '1',
         {'type': 'newstate', 'data': json_data}
     )
 
