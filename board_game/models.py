@@ -59,6 +59,7 @@ class Match(models.Model):
     def __str__(self):
         return str(self.game)
 
+
 # def save_post(sender, instance, **kwargs):
 #     chanel = get_channel_layer()
 #     print(chanel)
