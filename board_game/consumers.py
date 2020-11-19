@@ -1,4 +1,4 @@
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer,AsyncConsumer
 from .models import Match
 import json
 from channels.db import database_sync_to_async
@@ -18,7 +18,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name)
-        await self.accept()
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -26,6 +25,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 'data': match
             }
         )
+        await self.accept()
         print(f"Hello, you're connected to BoardGames's websocket. "
               f"This room of id '{self.room_group_name}', has data as dict type : {match}")
 
@@ -41,6 +41,13 @@ class RoomConsumer(AsyncWebsocketConsumer):
         self.text = state['boardState']
         update_content = await self.get_match(pk=self.room_name, update=True)
         print(f"Updated content after ORM.update is {update_content}")
+        # await self.channel_layer.group_send(
+        #     self.room_group_name,
+        #     {
+        #         'type':'message',
+        #         'data':update_content
+        #     }
+        # )
 
     async def newstate(self, event):
         dicta = json.loads(event['data'])

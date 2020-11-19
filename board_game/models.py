@@ -7,7 +7,6 @@ from django.forms.models import model_to_dict
 import json
 import asyncio
 
-
 # Create your models here.
 
 
@@ -60,23 +59,23 @@ class Match(models.Model):
     def __str__(self):
         return str(self.game)
 
-def save_post(sender, instance, **kwargs):
-    chanel = get_channel_layer()
-    print(chanel)
-    group = instance.pk
-    data = model_to_dict(instance)
-    loop = asyncio.new_event_loop()
-    json_data = json.dumps(data, cls=DjangoJSONEncoder)
-    print('GROUP:',group,json_data)
 
-    coroutine = async_to_sync(chanel.group_send)(
-        f'{group}',
-        {'type': 'newstate', 'data': json_data}
-    )
-    asyncio.set_event_loop(coroutine)
-
-
-post_save.connect(save_post, sender=Match, dispatch_uid='save_post')
+# def save_post(sender, instance, **kwargs):
+#     chanel = get_channel_layer()
+#     print(chanel)
+#     group = instance.pk
+#     data = model_to_dict(instance)
+#     json_data = json.dumps(data, cls=DjangoJSONEncoder)
+#     print('GROUP:',group,json_data)
+#
+#     async_to_sync(chanel.group_send)(
+#         f'{group}',
+#         {'type': 'newstate', 'data': json_data}
+#     )
+#
+#
+#
+# post_save.connect(save_post, sender=Match, dispatch_uid='save_post')
 
 
 class User(models.Model):
