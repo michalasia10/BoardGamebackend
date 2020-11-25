@@ -51,10 +51,6 @@ class AllMatches(generics.ListAPIView):
 class PlayerDelete(APIView):
     def get(self, request, pk):
         player = get_object_or_404(Player, pk=pk)
-        match_pk = player.match.pk
-        match = get_object_or_404(Match, pk=match_pk)
-        print(match.status)
-        print(isinstance(match.StatusInGame.CREATED, bool))
         serializer = PlayersSerializerDetail(player)
         return Response(serializer.data)
 
@@ -62,12 +58,11 @@ class PlayerDelete(APIView):
         player = get_object_or_404(Player, pk=pk)
         match_pk = player.match.pk
         match = get_object_or_404(Match, pk=match_pk)
-        print(match.status)
         if match.status == 'CREATED':
             if player == match.players.last():
                 match.delete()
                 print(f"Match with id: {match_pk} deleted")
-                player.delete()
+            player.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
