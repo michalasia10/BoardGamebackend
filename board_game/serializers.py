@@ -102,6 +102,7 @@ class MatchSerializer(serializers.ModelSerializer):
             'maxPlayers',
             'players',
             'state',
+            'status',
         ]
 
 
