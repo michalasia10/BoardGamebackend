@@ -42,6 +42,10 @@ class Game(models.Model):
 
 
 class Match(models.Model):
+    class StatusInGame(models.TextChoices):
+        CREATED = 'CREATED', 'CREATED'
+        ACTIVE = 'ACTIVE', 'ACTIVE'
+        FINISHED = 'FINISHED','FINISHED'
     game = models.ForeignKey(Game, on_delete=models.CASCADE,
                              related_name='matches',
                              help_text='Type of game which match belong to',
@@ -52,6 +56,7 @@ class Match(models.Model):
     state = models.CharField(max_length=144, default='---------',
                              help_text='State of board',
                              verbose_name='state of board')
+    status = models.CharField(max_length=144,choices=StatusInGame.choices, default=StatusInGame.CREATED)
 
     class Meta:
         ordering = ('game',)
