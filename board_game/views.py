@@ -56,6 +56,11 @@ class PlayerDelete(APIView):
 
     def delete(self, request, pk):
         player = get_object_or_404(Player, pk=pk)
+        match_pk = player.match.pk
+        match = get_object_or_404(Match, pk=match_pk)
+        if player == match.players.last():
+            match.delete()
+            print(f"Match with id: {match_pk} deleted")
         player.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
