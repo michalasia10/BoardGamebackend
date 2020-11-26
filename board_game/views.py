@@ -9,6 +9,7 @@ from .serializers import CategorySerializer, GameSerializer, UserSerializerGet, 
     PlayersSerializerCreate, PlayersSerializerDetail, MatchSerializer
 from django.shortcuts import get_object_or_404
 from .multiserializer.multiserializer import MethodSerializerView
+from django.db.models import Count
 
 
 class CategoryList(generics.ListAPIView):
@@ -71,6 +72,22 @@ class PlayerDelete(APIView):
 class PlayerJoin(generics.ListCreateAPIView):
     queryset = Player.objects.all()
     serializer_class = PlayersSerializerCreate
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        match = get_object_or_404(Match, pk=data['match'])
+        number = match.players.count()
+        serializer = self.serializer_class(data=data)
+        if number != match.maxPlayers and serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(
+                data=serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            data={'message': 'MATCH_FULL'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class RoomDetail(APIView):
