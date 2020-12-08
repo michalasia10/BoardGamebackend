@@ -51,7 +51,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         one_move = tictactoe.check_move()
 
         print(winner)
-        if not blank_field or one_move:
+        if not blank_field and one_move==False:
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
