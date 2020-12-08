@@ -81,14 +81,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         elif winner is None and blank_field:
             update_content = await self.get_match(pk=self.room_name, update=True, text=new_state)
             print(f"Updated content after ORM.update is {update_content}")
-        else:
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'message',
-                    'data': status.HTTP_400_BAD_REQUEST
-                }
-            )
+
 
 
     async def newstate(self, event):
