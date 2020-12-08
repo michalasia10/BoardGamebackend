@@ -1,9 +1,11 @@
-from channels.generic.websocket import AsyncWebsocketConsumer,AsyncConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, AsyncConsumer
 from .models import Match
 import json
 from channels.db import database_sync_to_async
 from .serializers import MatchSerializer
 from django.shortcuts import get_object_or_404
+from .game_logic.tictactoe import TicTacToe
+from rest_framework import status
 
 
 class RoomConsumer(AsyncWebsocketConsumer):
@@ -14,7 +16,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
         print(f"Connected, typ of connect {event}")
         print(self.room_group_name)
         match = await self.get_match(pk=self.room_name)
-        # Join room group
+        # if match['status'] == 'CREATED':
+        #     await self.get_match(pk=self.room_name, created=True)
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name)
@@ -37,17 +40,48 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data, **kwargs):
         state = json.loads(text_data)
+        match = await self.get_match(pk=self.room_name)
         print(f"JSON: {state}\nNew state of the game board: {state['boardState']}")
-        self.text = state['boardState']
-        update_content = await self.get_match(pk=self.room_name, update=True)
-        print(f"Updated content after ORM.update is {update_content}")
-        # await self.channel_layer.group_send(
-        #     self.room_group_name,
-        #     {
-        #         'type':'message',
-        #         'data':update_content
-        #     }
-        # )
+        new_state = state['boardState']
+        print(new_state)
+        tictactoe = TicTacToe(match['state'], new_state)
+        full_board = tictactoe.check_finished()
+        winner = tictactoe.run()
+        blank_field = tictactoe.check_blank()
+        one_move = tictactoe.check_move()
+
+        print(winner)
+        if not blank_field or one_move:
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'message',
+                    'data': status.HTTP_400_BAD_REQUEST
+                }
+            )
+        elif full_board:
+            await self.get_match(pk=self.room_name, text=new_state, finish=True)
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type':'winner_message',
+                    'winner': '',
+                }
+            )
+        elif str(winner) in 'XO':
+            await self.get_match(pk=self.room_name, text=new_state, finish=True)
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'winner_message',
+                    'winner': winner,
+                }
+            )
+        elif winner is None:
+            update_content = await self.get_match(pk=self.room_name, update=True, text=new_state)
+            print(f"Updated content after ORM.update is {update_content}")
+        else:
+            print('Something goes wrong')
 
     async def newstate(self, event):
         dicta = json.loads(event['data'])
@@ -57,22 +91,40 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     async def message(self, event):
         content = event['type']
-        something = event["data"]
+        message = event["data"]
         await self.send(text_data=
         json.dumps(
             {
                 'content': content,
-                'data': something,
+                'data': message,
+            }
+        ))
+
+    async def winner_message(self, event):
+        winner = event['winner']
+        await self.send(text_data=
+        json.dumps(
+            {
+                'winner': winner,
             }
         ))
 
     @database_sync_to_async
-    def get_match(self, pk, update=False):
+    def get_match(self, pk, update=False, text=False, finish=False, created=False):
         match = get_object_or_404(Match, pk=pk)
         if update:
             match = Match.objects.get(pk=pk)
-            match.state = self.text
+            match.state = text
             match.save(update_fields=['state'])
             return MatchSerializer(match).data
+        if finish:
+            match = Match.objects.get(pk=pk)
+            match.state = text
+            match.status = 'FINISHED'
+            match.save(update_fields=['state', 'status'])
+        if created:
+            match = Match.objects.get(pk=pk)
+            match.status = 'ACTIVE'
+            match.save(update_fields='status')
         else:
             return MatchSerializer(match).data

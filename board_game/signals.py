@@ -16,11 +16,10 @@ def save_post(sender, instance, **kwargs):
     data = model_to_dict(instance)
     json_data = json.dumps(data, cls=DjangoJSONEncoder)
     print('GROUP:', group, json_data)
-
     async_to_sync(chanel.group_send)(
-        f'{group}',
-        {'type': 'newstate', 'data': json_data}
-    )
+            f'{group}',
+            {'type': 'newstate', 'data': json_data}
+        )
 
 
 post_save.connect(save_post, sender=Match, dispatch_uid='save_post')

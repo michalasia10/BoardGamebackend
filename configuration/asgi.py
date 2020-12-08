@@ -1,5 +1,5 @@
 """
-ASGI config for untitled1 project.
+ASGI config for configuration project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -14,7 +14,7 @@ from channels.layers import get_channel_layer
 import django
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'untitled1.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'configuration.settings')
 # os.environ['ASGI_THREADS']="4"
 django.setup()
 application = get_default_application()
