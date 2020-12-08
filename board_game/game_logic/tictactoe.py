@@ -28,22 +28,14 @@ class TicTacToe:
         self.new_state = list(new_state)
         self.old_state = list(old_state)
 
-    def check_blank(self):
-        if self.check_move() and not self.check_finished():
-            for idx, (item_o, item_n) in enumerate(zip(self.old_state, self.new_state)):
-                if item_n != item_o and item_o not in 'XO':
-                    self.old_state[idx] = item_n
-                    print(f'Zmiana {idx} pola z {item_o} na {item_n}')
-                elif item_n != item_o and item_o in 'XO':
-                    print('Próba zmiany Pola innego usera')
-                    return False
-            return True
-        else:
-            return False
 
     def check_move(self):
         num_dif = sum(i != j for i, j in zip(self.new_state, self.old_state))
-        return num_dif == 1
+        if  num_dif == 1:
+            return True
+        elif num_dif>1:
+            return False
+
 
     def check_finished(self):
         return '_' not in self.new_state
@@ -81,6 +73,18 @@ class TicTacToe:
             winner = columns[list(columns.keys())[index]]
             return winner
         except IndexError:
+            return False
+
+    def check_blank(self):
+        if self.check_move() and not self.check_finished():
+            for idx, (item_o, item_n) in enumerate(zip(self.old_state, self.new_state)):
+                if item_n != item_o and item_o not in 'XO':
+                    print(f'Zmiana {idx} pola z {item_o} na {item_n}')
+                    return True
+                elif item_n != item_o and item_o in 'XO':
+                    print('Próba zmiany Pola innego usera')
+                    return False
+        else:
             return False
 
     def run(self):

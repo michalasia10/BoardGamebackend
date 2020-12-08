@@ -16,8 +16,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
         print(f"Connected, typ of connect {event}")
         print(self.room_group_name)
         match = await self.get_match(pk=self.room_name)
-        # if match['status'] == 'CREATED':
-        #     await self.get_match(pk=self.room_name, created=True)
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name)
@@ -46,26 +44,29 @@ class RoomConsumer(AsyncWebsocketConsumer):
         print(new_state)
         tictactoe = TicTacToe(match['state'], new_state)
         full_board = tictactoe.check_finished()
+        one_move = tictactoe.check_move()
         winner = tictactoe.run()
         blank_field = tictactoe.check_blank()
-        one_move = tictactoe.check_move()
+        print('one move', one_move, 'ful board', full_board)
+        print('blank field', blank_field)
 
-        print(winner)
-        if not blank_field or one_move==False:
+        if full_board:
+            await self.get_match(pk=self.room_name, text=new_state, finish=True)
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'winner_message',
+                    'winner': '',
+                }
+            )
+
+        if not one_move or not blank_field:
+            print(f'Bad move, allowed 1 move : {one_move}/1 or you wanna try to change someone field {blank_field} ')
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'message',
                     'data': status.HTTP_400_BAD_REQUEST
-                }
-            )
-        elif full_board:
-            await self.get_match(pk=self.room_name, text=new_state, finish=True)
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type':'winner_message',
-                    'winner': '',
                 }
             )
         elif str(winner) in 'XO':
@@ -77,11 +78,18 @@ class RoomConsumer(AsyncWebsocketConsumer):
                     'winner': winner,
                 }
             )
-        elif winner is None:
+        elif winner is None and blank_field:
             update_content = await self.get_match(pk=self.room_name, update=True, text=new_state)
             print(f"Updated content after ORM.update is {update_content}")
         else:
-            print('Something goes wrong')
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'message',
+                    'data': status.HTTP_400_BAD_REQUEST
+                }
+            )
+
 
     async def newstate(self, event):
         dicta = json.loads(event['data'])
