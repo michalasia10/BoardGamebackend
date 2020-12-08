@@ -38,7 +38,7 @@ class TicTacToe:
 
 
     def check_finished(self):
-        return '_' not in self.new_state
+        return '-' not in self.new_state
 
     def check_columns(self):
         columns = self.wins['columns']
