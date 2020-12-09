@@ -69,7 +69,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
                     }
                 )
 
-        if not one_move or not blank_field:
+        elif not one_move or not blank_field:
             print(f'Bad move, allowed 1 move : {one_move}/1 or you wanna try to change someone field {blank_field} ')
             await self.channel_layer.group_send(
                 self.room_group_name,
