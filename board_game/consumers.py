@@ -51,14 +51,23 @@ class RoomConsumer(AsyncWebsocketConsumer):
         print('blank field', blank_field)
 
         if full_board:
-            await self.get_match(pk=self.room_name, text=new_state, finish=True)
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'winner_message',
-                    'winner': '',
-                }
-            )
+            if not blank_field:
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'message',
+                        'data': status.HTTP_400_BAD_REQUEST
+                    }
+                )
+            else:
+                await self.get_match(pk=self.room_name, text=new_state, finish=True)
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'winner_message',
+                        'winner': '',
+                    }
+                )
 
         if not one_move or not blank_field:
             print(f'Bad move, allowed 1 move : {one_move}/1 or you wanna try to change someone field {blank_field} ')
