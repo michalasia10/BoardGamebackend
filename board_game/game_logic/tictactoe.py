@@ -79,10 +79,10 @@ class TicTacToe:
         if self.check_move() and not self.check_finished():
             for idx, (item_o, item_n) in enumerate(zip(self.old_state, self.new_state)):
                 if item_n != item_o and item_o not in 'XO':
-                    print(f'Zmiana {idx} pola z {item_o} na {item_n}')
+                    print(f'Field {idx} was changed from {item_o} to {item_n}')
                     return True
                 elif item_n != item_o and item_o in 'XO':
-                    print('Próba zmiany Pola innego usera')
+                    print('Some tried to change other user\'s field')
                     return False
         else:
             return False

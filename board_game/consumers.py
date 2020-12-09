@@ -41,14 +41,11 @@ class RoomConsumer(AsyncWebsocketConsumer):
         match = await self.get_match(pk=self.room_name)
         print(f"JSON: {state}\nNew state of the game board: {state['boardState']}")
         new_state = state['boardState']
-        print(new_state)
         tictactoe = TicTacToe(match['state'], new_state)
         full_board = tictactoe.check_finished()
         one_move = tictactoe.check_move()
         winner = tictactoe.run()
         blank_field = tictactoe.check_blank()
-        print('one move', one_move, 'ful board', full_board)
-        print('blank field', blank_field)
 
         if full_board:
             if not blank_field:
