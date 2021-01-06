@@ -4,7 +4,7 @@ import json
 from channels.db import database_sync_to_async
 from .serializers import MatchSerializer
 from django.shortcuts import get_object_or_404
-from .game_logic.tictactoe import TicTacToe
+from .game_logic.tictactoe import TicTacToe,State
 from rest_framework import status
 
 
@@ -41,11 +41,10 @@ class RoomConsumer(AsyncWebsocketConsumer):
         match = await self.get_match(pk=self.room_name)
         print(f"JSON: {state}\nNew state of the game board: {state['boardState']}")
         new_state = state['boardState']
-        tictactoe = TicTacToe(match['state'], new_state)
-        full_board = tictactoe.check_finished()
-        one_move = tictactoe.check_move()
-        winner = tictactoe.run()
-        blank_field = tictactoe.check_blank()
+        game = State(match['state'], new_state)
+        full_board = game.check_finished()
+        one_move = game.check_move()
+        blank_field = game.check_blank()
 
         if full_board:
             if not blank_field:
@@ -54,15 +53,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
                     {
                         'type': 'message',
                         'data': status.HTTP_400_BAD_REQUEST
-                    }
-                )
-            else:
-                await self.get_match(pk=self.room_name, text=new_state, finish=True)
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        'type': 'winner_message',
-                        'winner': '',
                     }
                 )
 
@@ -75,24 +65,14 @@ class RoomConsumer(AsyncWebsocketConsumer):
                     'data': status.HTTP_400_BAD_REQUEST
                 }
             )
-        elif str(winner) in 'XO':
-            await self.get_match(pk=self.room_name, text=new_state, finish=True)
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'winner_message',
-                    'winner': winner,
-                }
-            )
-        elif winner is None and blank_field:
-            update_content = await self.get_match(pk=self.room_name, update=True, text=new_state)
-            print(f"Updated content after ORM.update is {update_content}")
+        elif blank_field:
+             update_content = await self.get_match(pk=self.room_name, update=True, text=new_state)
+             print(f"Updated content after ORM.update is {update_content}")
 
 
 
     async def newstate(self, event):
         dicta = json.loads(event['data'])
-
         await self.send(text_data=json.dumps(dicta))
         print(f' Automatically updated database content {dicta}')
 
@@ -109,6 +89,13 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     async def winner_message(self, event):
         winner = event['winner']
+        if str(winner) in 'XO' or '':
+            await self.get_match(pk=self.room_name, finish=True)
+            match = await self.get_match(pk=self.room_name)
+            await self.send(text_data=
+            json.dumps(
+                match
+            ))
         await self.send(text_data=
         json.dumps(
             {
@@ -126,9 +113,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
             return MatchSerializer(match).data
         if finish:
             match = Match.objects.get(pk=pk)
-            match.state = text
             match.status = 'FINISHED'
-            match.save(update_fields=['state', 'status'])
+            match.save(update_fields=['status'])
         if created:
             match = Match.objects.get(pk=pk)
             match.status = 'ACTIVE'
