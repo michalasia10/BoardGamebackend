@@ -65,6 +65,9 @@ class PlayerDelete(APIView):
                 print(f"Match with id: {match_pk} deleted")
             player.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+        elif match.status == 'FINISHED':
+            player.delete()
+            return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
