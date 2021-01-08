@@ -83,6 +83,8 @@ class PlayerJoin(generics.ListCreateAPIView):
         serializer = self.serializer_class(data=data)
         if number != match.maxPlayers and serializer.is_valid(raise_exception=True):
             serializer.save()
+            match.status = 'ACTIVE'
+            match.save()
             return Response(
                 data=serializer.data,
                 status=status.HTTP_201_CREATED

@@ -57,6 +57,7 @@ class Match(models.Model):
                              help_text='State of board',
                              verbose_name='state of board')
     status = models.CharField(max_length=144,choices=StatusInGame.choices, default=StatusInGame.CREATED)
+    currentPlayer = models.IntegerField(default=None,null=True)
 
     class Meta:
         ordering = ('game',)
@@ -64,23 +65,6 @@ class Match(models.Model):
     def __str__(self):
         return str(self.game)
 
-
-# def save_post(sender, instance, **kwargs):
-#     chanel = get_channel_layer()
-#     print(chanel)
-#     group = instance.pk
-#     data = model_to_dict(instance)
-#     json_data = json.dumps(data, cls=DjangoJSONEncoder)
-#     print('GROUP:',group,json_data)
-#
-#     async_to_sync(chanel.group_send)(
-#         f'{group}',
-#         {'type': 'newstate', 'data': json_data}
-#     )
-#
-#
-#
-# post_save.connect(save_post, sender=Match, dispatch_uid='save_post')
 
 
 class User(models.Model):
@@ -103,6 +87,9 @@ class Player(models.Model):
                                       primary_key=True,
                                       help_text='user will be a player ',
                                       verbose_name='player',)
+    mark = models.CharField(max_length=144,
+                            default='',
+                            blank=True)
 
 
     class Meta:

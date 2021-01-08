@@ -20,7 +20,7 @@ def save_post(sender, instance, **kwargs):
     json_data = json.dumps(data, cls=DjangoJSONEncoder)
     print('GROUP:', group, json_data)
 
-    if data['status'] is not 'FINISHED':
+    if data['status'] is 'ACTIVE':
         if str(winner) in 'XO':
             async_to_sync(chanel.group_send)(
                 f'{group}',

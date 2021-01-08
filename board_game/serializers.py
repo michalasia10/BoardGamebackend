@@ -74,7 +74,7 @@ class PlayersSerializerForMatch(serializers.ModelSerializer):
     class Meta:
         model = Player
         fields = (
-            'userId', 'playerName',
+            'userId', 'playerName','mark',
         )
 
 
@@ -102,6 +102,7 @@ class MatchSerializer(serializers.ModelSerializer):
             'maxPlayers',
             'players',
             'state',
+            'currentPlayer',
             'status',
         ]
 
