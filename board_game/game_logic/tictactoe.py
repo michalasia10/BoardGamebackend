@@ -49,12 +49,16 @@ class State:
         else:
             return False
 
+    def check_mark(self):
+        for idx, (item_o, item_n) in enumerate(zip(self.old_state, self.new_state)):
+            if item_n != item_o and item_o not in 'XO':
+                return item_n
+
 
 class TicTacToe:
 
     def __init__(self, state):
         self.state = list(state)
-
 
     def check_finished(self):
         return '-' not in self.state
@@ -93,7 +97,6 @@ class TicTacToe:
             return winner
         except IndexError:
             return False
-
 
     def run(self):
         logic = [self.check_rows, self.check_columns, self.check_diag]
