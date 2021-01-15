@@ -57,7 +57,7 @@ class Match(models.Model):
                              help_text='State of board',
                              verbose_name='state of board')
     status = models.CharField(max_length=144,choices=StatusInGame.choices, default=StatusInGame.CREATED)
-    currentPlayer = models.IntegerField(default=None,null=True)
+    currentPlayer = models.IntegerField(default=None,null=True, blank=True)
 
     class Meta:
         ordering = ('game',)
