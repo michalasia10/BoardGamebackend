@@ -13,6 +13,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
     async def websocket_connect(self, event):
         self.room_name = self.scope['url_route']['kwargs']['match_pk']
         self.room_group_name = self.room_name
+        await self.accept()
         print(f"Connected, typ of connect {event}")
         print(self.room_group_name)
         match = await self.get_match(pk=self.room_name)
@@ -45,7 +46,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 'data': match
             }
         )
-        await self.accept()
+        # await self.accept()
         print(f"Hello, you're connected to BoardGames's websocket. "
               f"This room of id '{self.room_group_name}', has data as dict type : {match}")
 
