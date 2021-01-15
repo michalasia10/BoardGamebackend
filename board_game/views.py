@@ -78,10 +78,11 @@ class PlayerJoin(generics.ListCreateAPIView):
         match = get_object_or_404(Match, pk=data['match'])
         number = match.players.count()
         serializer = self.serializer_class(data=data)
-        if number == match.maxPlayers and serializer.is_valid(raise_exception=True):
+        if number != match.maxPlayers and serializer.is_valid(raise_exception=True):
             serializer.save()
-            match.status = 'ACTIVE'
-            match.save()
+            if number == match.maxPlayers:
+                match.status = 'ACTIVE'
+                match.save()
             return Response(
                 data=serializer.data,
                 status=status.HTTP_201_CREATED
