@@ -80,7 +80,9 @@ class PlayerJoin(generics.ListCreateAPIView):
         serializer = self.serializer_class(data=data)
         if number != match.maxPlayers and serializer.is_valid(raise_exception=True):
             serializer.save()
-            if number == match.maxPlayers:
+            match = get_object_or_404(Match, pk=data['match'])
+            number1 = match.players.count()
+            if number1 == match.maxPlayers:
                 match.status = 'ACTIVE'
                 match.save()
             return Response(
