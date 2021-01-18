@@ -1,13 +1,9 @@
-from re import fullmatch, search
+from re import fullmatch, search, findall
 
 wins = {
     'columns': {
-        'X..X..X..': 'X',
-        'O..O..O..': 'O',
-        '.X..X..X.': 'X',
-        '.O..O..O.': 'O',
-        '..X..X..X': 'X',
-        '..O..O..O': 'O',
+       'X..X..X': 'X',
+       'O..O..O': 'O',
     },
     'rows': {
         'XXX': 'X',
@@ -67,8 +63,7 @@ class TicTacToe:
         columns = wins['columns']
         try:
             index = \
-                [index for index, value in enumerate([(fullmatch(t, ''.join(self.state))) for t in columns.keys()])
-                 if
+                [index for index, value in enumerate([(search(t, ''.join(self.state))) for t in columns.keys()]) if
                  value][0]
             winner = columns[list(columns.keys())[index]]
             return winner
@@ -76,15 +71,13 @@ class TicTacToe:
             return False
 
     def check_rows(self):
-        columns = wins['rows']
-        try:
-            index = \
-                [index for index, value in enumerate([(search(t, ''.join(self.state))) for t in columns.keys()]) if
-                 value][0]
-            winner = columns[list(columns.keys())[index]]
-            return winner
-        except IndexError:
-            return False
+        rows = wins['rows']
+        state = ''.join(self.state)
+        for winnerState in rows.keys():
+            if winnerState in findall('...?',state):
+                return rows[winnerState]
+        return False
+
 
     def check_diag(self):
         columns = wins['diagonal']
@@ -104,3 +97,11 @@ class TicTacToe:
             value = i()
             if value:
                 return value
+
+
+
+
+
+
+
+
