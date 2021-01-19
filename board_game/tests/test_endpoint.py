@@ -240,11 +240,3 @@ class JoinMatchByPost(TestCase):
             data=json.dumps(self.invalid_payload),
             content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-
-# testy  = ["XXX-O-X-O","-O-XXXX-O","-O-X-OXXX","OOOX-OX-X","X-OOOO-XX","X-OXXXO-O","X-XXXOOO-" ,"XO-OX-O-X","XO--X-O-X","OX--O-X-O","OXXO--O-X",]
-# winner = ["X","X", "X","O","O","X",None,"X","X","O","O",]
-#
-# for index in range(len(testy)):
-#     gra = TicTacToe(testy[index])
-#     print(index+1,f'wygrana {gra.run()}','powinien być',winner[index])

@@ -2,6 +2,7 @@ from django.test import TestCase
 from ..game_logic.tictactoe import TicTacToe, State
 import json
 
+# data with states to test
 states = json.load(open('board_game/tests/states_to_test.json'))
 
 
@@ -55,8 +56,10 @@ class CheckDiag(TestCase):
 
 class CheckWinner(TestCase):
     def setUp(self) -> None:
-        state = states['winerIsKnow']
-        for key, value in state.items():
+        self.state = states['winerIsKnow']
+
+    def test_value_from_game_equal_to_state_winner(self):
+        for key, value in self.state.items():
             winner = TicTacToe(key).run()
             self.assertEqual(winner, value)
 
