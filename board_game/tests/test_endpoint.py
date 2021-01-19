@@ -20,9 +20,11 @@ numbers = [str(i) for i in list(range(1000))]
 class GetAllGames(TestCase):
     def setUp(self) -> None:
         self.category = Project.objects.create(projectName='planszufki')
-        Game.objects.create(games=self.category, name='kolko i krzyzyk',
+        Game.objects.create(games=self.category,
+                            name='kolko i krzyzyk',
                             imgUrl='https://stackoverflow.com/questions/52827996/how-do-i-test-the-foreign-key-object-on-django-model/52828084')
-        Game.objects.create(games=self.category, name='szachy',
+        Game.objects.create(games=self.category,
+                            name='szachy',
                             imgUrl='https://stackoverflow.com/questions/52827996/how-do-i-test-the-foreign-key-object-on-django-model/52828084')
 
     def get_all_type_of_games(self):
@@ -39,7 +41,8 @@ class CreateMatchesTest(TestCase):
 
     def setUp(self) -> None:
         self.category = Project.objects.create(projectName='planszufki')
-        self.game = Game.objects.create(games=self.category, name='szachy',
+        self.game = Game.objects.create(games=self.category,
+                                        name='szachy',
                                         imgUrl='https://stackoverflow.com/questions/52827996/how-do-i-test-the-foreign-key-object-on-django-model/52828084')
         Match.objects.create(game=self.game, maxPlayers=choice(numbers))
         Match.objects.create(game=self.game, maxPlayers=choice(numbers))
@@ -58,7 +61,8 @@ class CreateMatchesTest(TestCase):
 class CreateMatchesByPostTest(TestCase):
     def setUp(self) -> None:
         self.category = Project.objects.create(projectName='planszufki')
-        self.game = Game.objects.create(games=self.category, name='szachy',
+        self.game = Game.objects.create(games=self.category,
+                                        name='szachy',
                                         imgUrl='https://image.freepik.com/darmowe-wektory/gra-tic-tac-toe_97886-854.jpg')
         # print(self.game,self.game.id)
         self.valid_payload = {
@@ -86,13 +90,17 @@ class CreateMatchesByPostTest(TestCase):
 class ActionsOnMatchesObjects(TestCase):
     def setUp(self) -> None:
         self.category = Project.objects.create(projectName='planszufki')
-        self.game = Game.objects.create(games=self.category, name='kółko i krzyżyk',
+        self.game = Game.objects.create(games=self.category,
+                                        name='kółko i krzyżyk',
                                         imgUrl='https://image.freepik.com/darmowe-wektory/gra-tic-tac-toe_97886-854.jpg')
-        self.match = Match.objects.create(game=self.game, maxPlayers=2)
+        self.match = Match.objects.create(game=self.game,
+                                          maxPlayers=2)
         self.user1 = User.objects.create(username=choice(names) + choice(numbers))
         self.user2 = User.objects.create(username=choice(names) + choice(numbers))
-        self.player1 = Player.objects.create(match=self.match, playerName=self.user1)
-        self.player2 = Player.objects.create(match=self.match, playerName=self.user2)
+        self.player1 = Player.objects.create(match=self.match,
+                                             playerName=self.user1)
+        self.player2 = Player.objects.create(match=self.match,
+                                             playerName=self.user2)
         self.randomPlayerList = [self.player1, self.player2]
 
     # endpoint : '/allmatches'
@@ -232,3 +240,11 @@ class JoinMatchByPost(TestCase):
             data=json.dumps(self.invalid_payload),
             content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+# testy  = ["XXX-O-X-O","-O-XXXX-O","-O-X-OXXX","OOOX-OX-X","X-OOOO-XX","X-OXXXO-O","X-XXXOOO-" ,"XO-OX-O-X","XO--X-O-X","OX--O-X-O","OXXO--O-X",]
+# winner = ["X","X", "X","O","O","X",None,"X","X","O","O",]
+#
+# for index in range(len(testy)):
+#     gra = TicTacToe(testy[index])
+#     print(index+1,f'wygrana {gra.run()}','powinien być',winner[index])
