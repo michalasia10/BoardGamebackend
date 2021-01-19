@@ -1,4 +1,3 @@
-from channels.generic.websocket import WebsocketConsumer
 from django.test import TestCase
 from ..game_logic.tictactoe import TicTacToe, State
 import json
