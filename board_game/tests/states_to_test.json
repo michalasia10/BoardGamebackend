@@ -3,20 +3,20 @@
         "win": ["XXX-O-X-O", "-O-XXXX-O", "-O-X-OXXX",
                 "OOOX-OX-X", "X-OOOO-XX", "X-OXXXO-O",
                 "OOO--X-XX"],
-        "lose": ["X-X-O-X-O", "-O-XOXX-O", "-O-X-OX-X",
+        "notWin": ["X-X-O-X-O", "-O-XOXX-O", "-O-X-OX-X",
                  "XOOX-OX-X", "X-OXXO-XX", "X-OX-XO-O",
                  "OXO--X-XX"]
     },
     "columns": {
         "win": ["X--X--X--", "O--O--O--", "-O--O--O-",
                 "-X--X--X-", "--X--X--X", "--O--O--O"],
-        "lose": ["XXX-O-X-O", "-O-XXXX-O", "-O-X-OXXX",
+        "notWin": ["XXX-O-X-O", "-O-XXXX-O", "-O-X-OXXX",
                  "OOOX-OX-X", "X-OOOO-XX", "X-OXXXO-O", "OOO--X-XX"]
     },
     "diagonal": {
         "win": ["X---X---X","O---O---O",
                 "--X-X-X--","--O-O-O--"],
-        "lose": ["X--X--X--", "O--O--O--", "-O--O--O-",
+        "notWin": ["X--X--X--", "O--O--O--", "-O--O--O-",
                  "-X--X--X-", "--X--X--X", "--O--O--O"]
     },
     "winerIsKnow":{

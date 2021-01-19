@@ -8,7 +8,7 @@ states = json.load(open('board_game/tests/states_to_test.json'))
 class CheckRows(TestCase):
     def setUp(self) -> None:
         self.winingRows = states['rows']['win']
-        self.notWinningRows = states['rows']['lose']
+        self.notWinningRows = states['rows']['notWin']
 
     def test_is_winner_in_row(self):
         for test in self.winingRows:
@@ -24,7 +24,7 @@ class CheckRows(TestCase):
 class CheckColumns(TestCase):
     def setUp(self) -> None:
         self.winingColumn = states['columns']['win']
-        self.notWinningColumn = states['columns']['lose']
+        self.notWinningColumn = states['columns']['notWin']
 
     def test_is_winner_in_column(self):
         for test in self.winingColumn:
@@ -40,7 +40,7 @@ class CheckColumns(TestCase):
 class CheckDiag(TestCase):
     def setUp(self) -> None:
         self.winingColumn = states['diagonal']['win']
-        self.notWinningColumn = states['diagonal']['lose']
+        self.notWinningColumn = states['diagonal']['notWin']
 
     def test_is_winner_in_diag(self):
         for test in self.winingColumn:
