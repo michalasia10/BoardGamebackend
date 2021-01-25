@@ -36,5 +36,55 @@
         "X---X---X":"X",
         "--X-X-X--":"X",
         "O---O---O":"O",
-        "--O-O-O--":"O"}
+        "--O-O-O--":"O"},
+    "checkState": {
+        "finished": {
+            "oldState":["XOXXOXX-O", "OOXXOX-OO", "OOXXXOX-X",
+                 "XOOX-OXOX", "X-OXXOOXX", "XXOXOXOXO",
+                 "OXOX-XOXX"],
+            "newState": ["XOXXOXXOO", "OOXXOXXOO", "OOXXXOXXX",
+                 "XOOXOOXOX", "XOOXXOOXX", "XXOXOXOXO",
+                 "OXOXOXOXX"]
+        },
+        "notFinished": {
+            "oldState":["X-X-O-X-O", "-O-XOXX-O", "-O-X-OX-X",
+                 "XOOX-OX-X", "X-OXXO-XX", "X-OX-XO-O",
+                 "OXO--X-XX"],
+            "newState": ["X-XXO-X-O", "-OOXOXX-O", "XO-X-OX-X",
+                 "XOOX-OXOX", "X-OXXOOXX", "X-OX-XOOO",
+                 "OXO--XXXX"]
+        },
+        "oneMove": {
+            "oldState":["X-X-O-X-O", "-O-XOXX-O", "-O-X-OX-X",
+                 "XOOX-OX-X", "X-OXXO-XX", "X-OX-XO-O",
+                 "OXO--X-XX"],
+            "newState": ["X-XXO-X-O", "-OOXOXX-O", "XO-X-OX-X",
+                 "XOOX-OXOX", "X-OXXOOXX", "X-OX-XOOO",
+                 "OXO--XXXX"]
+        },
+        "notOneMove": {
+            "oldState":["X-X-O-X-O", "-O-XOXX-O", "-O-X-OX-X",
+                 "XOOX-OX-X", "X-OXXO-XX", "X-OX-XO-O",
+                 "OXO--X-XX"],
+            "newState": ["XXXOO-X-O", "-XXXOXXXO", "OOOX-OX-X",
+                 "XOOXXOXXX", "X-OXXOXXO", "X-OXOXOXX",
+                 "OXOOOXOXX"]
+        },
+        "changedField": {
+            "oldState":["X-X-O-X-O", "-O-XOXX-O", "-O-X-OX-X",
+                 "XOOX-OX-X", "X-OXXO-XX", "X-OX-XO-O",
+                 "OXO--X-XX"],
+            "newState": ["X-O-O-X-O", "-O-XXXX-O", "-X-X-OX-X",
+                 "XOOX-OX-X", "XXOXXOXXX", "X-OX-XOXX",
+                 "OXO--X-XO"]
+        },
+        "notChangedField": {
+            "oldState":["X-X-O-X-O", "-O-XOXX-O", "-O-X-OX-X",
+                 "XOOX-OX-X", "X-OXXO-XX", "X-OX-XO-O",
+                 "OXO--X-XX"],
+            "newState": ["X-XXO-X-O", "-OOXOXX-O", "XO-X-OX-X",
+                 "XOOX-OXOX", "X-OXXOOXX", "X-OX-XOOO",
+                 "OXO--XXXX"]
+      }
     }
+}

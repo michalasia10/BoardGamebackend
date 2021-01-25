@@ -64,12 +64,57 @@ class CheckWinner(TestCase):
             self.assertEqual(winner, value)
 
 
-class SimpleStateTest(TestCase):
+class StateOneMoveTests(TestCase):
     def setUp(self) -> None:
-        oldState = "XXX-O-X--"
-        newState = "XXX-O-X-O"
-        self.checkState = State(oldState, newState)
+        state = states['checkState']
+        self.oldStateOneMove = state['oneMove']['oldState']
+        self.oldStateNotOneMove = state['notOneMove']['oldState']
+        self.newStateOneMove = state['oneMove']['newState']
+        self.newStateNotOneMove = state['notOneMove']['newState']
 
     def test_there_was_one_move(self):
-        oneMove = self.checkState.check_move()
-        self.assertEqual(oneMove, True)
+        for old,new in zip(self.oldStateOneMove,self.newStateOneMove):
+            oneMove = State(old,new).check_move()
+            self.assertEqual(oneMove, True)
+
+    def test_there_wasnt_one_move(self):
+        for old,new in zip(self.oldStateNotOneMove,self.newStateNotOneMove):
+            oneMove = State(old,new).check_move()
+            self.assertEqual(oneMove, False)
+
+class StateFinishedGameTests(TestCase):
+    def setUp(self) -> None:
+        state = states['checkState']
+        self.oldStateFinished = state['finished']['oldState']
+        self.oldStateNotFinished = state['notFinished']['oldState']
+        self.newStateFinished = state['finished']['newState']
+        self.newStateNotFinished = state['notFinished']['newState']
+
+    def test_game_is_finished(self):
+        for old,new in zip(self.oldStateFinished,self.newStateFinished):
+            finished = State(old,new).check_finished()
+            self.assertEqual(finished,True)
+
+    def test_game_is_not_finished(self):
+        for old,new in zip(self.oldStateNotFinished,self.newStateNotFinished):
+            finished = State(old,new).check_finished()
+            self.assertEqual(finished,False)
+
+
+class StateFieldChangedTest(TestCase):
+    def setUp(self) -> None:
+        state = states['checkState']
+        self.oldStateChangeField = state['changedField']['oldState']
+        self.oldStateNotChangeField = state['notChangedField']['oldState']
+        self.newStateChangeField = state['changedField']['newState']
+        self.newStateNotChangeField = state['notChangedField']['newState']
+
+    def test_gamer_change_enemy_field(self):
+        for old,new in zip(self.oldStateChangeField,self.newStateChangeField):
+            changed = State(old,new).check_blank()
+            self.assertEqual(changed,False)
+
+    def test_gamer_didnt_change_enemy_field(self):
+        for old, new in zip(self.oldStateNotChangeField, self.newStateNotChangeField):
+            changed = State(old, new).check_blank()
+            self.assertEqual(changed, True)
