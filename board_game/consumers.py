@@ -50,7 +50,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         print(f"Hello, you're connected to BoardGames's websocket. "
               f"This room of id '{self.room_group_name}', has data as dict type : {match}")
 
-    async def disconnect(self, close_code):
+    async def disconnect(self, code):
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
@@ -80,7 +80,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 }
             )
         elif full_board and playerId == match['currentPlayer'] and currentPlayerMark == new_mark:
-                print('tu zmiana')
                 await self.update_match(pk=self.room_name,text=new_state)
 
 
@@ -95,7 +94,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
             )
          # check if move was correct and playerId is the same as currentPlayer
         elif blank_field:
-            print('dupa')
             if playerId == match['currentPlayer'] and currentPlayerMark == new_mark:
                 enemyPlayerId = [list(i.items())[0][1] for i in playersList if list(i.items())[0][1] != playerId][0]
                 update_content = await self.update_match(pk=self.room_name, text=new_state, enemyPlayerId=enemyPlayerId)
