@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 # initialize the APIClient app
 client = Client()
 
+
 # data to test
 names = ['michal', 'artur', 'marek', 'wiktoria']
 numbers = [str(i) for i in list(range(1000))]
@@ -20,17 +21,19 @@ numbers = [str(i) for i in list(range(1000))]
 class GetAllGames(TestCase):
     def setUp(self) -> None:
         self.category = Project.objects.create(projectName='planszufki')
-        Game.objects.create(games=self.category,
+        self.game = Game.objects.create(games=self.category,
                             name='kolko i krzyzyk',
                             imgUrl='https://stackoverflow.com/questions/52827996/how-do-i-test-the-foreign-key-object-on-django-model/52828084')
         Game.objects.create(games=self.category,
                             name='szachy',
                             imgUrl='https://stackoverflow.com/questions/52827996/how-do-i-test-the-foreign-key-object-on-django-model/52828084')
+        Match.objects.create(game=self.game, maxPlayers=2)
 
-    def get_all_type_of_games(self):
+
+    def test_get_all_type_of_games(self):
         response = client.get(reverse('game-list'))
         games = Game.objects.all()
-        serializer = GameSerializer(games)
+        serializer = GameSerializer(games,many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
