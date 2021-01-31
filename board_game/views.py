@@ -9,7 +9,7 @@ from .serializers import CategorySerializer, GameSerializer, UserSerializerGet, 
     PlayersSerializerCreate, PlayersSerializerDetail, MatchSerializer
 from django.shortcuts import get_object_or_404
 from .multiserializer.multiserializer import MethodSerializerView
-from django.db.models import Count
+from django.db import IntegrityError
 
 
 class CategoryList(generics.ListAPIView):
@@ -79,7 +79,13 @@ class PlayerJoin(generics.ListCreateAPIView):
         number = match.players.count()
         serializer = self.serializer_class(data=data)
         if number != match.maxPlayers and serializer.is_valid(raise_exception=True):
-            serializer.save()
+            try:
+                serializer.save()
+            except IntegrityError:
+                return Response(
+                    data={'message':'YOU ARE IN ANOTHER GAME'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             match = get_object_or_404(Match, pk=data['match'])
             number1 = match.players.count()
             if number1 == match.maxPlayers:
