@@ -9,8 +9,11 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(),name='register'),
     path('users/', RegisterUser.as_view()),
     path('matches/<int:pk>', RoomList.as_view(),name='matches'),
+    path('match-history/<int:pk>', RoomList.as_view(),name='match-history'),
     path('allmatches', AllMatches.as_view(), name='allmatches'),
     path('leave-match/<int:pk>', PlayerDelete.as_view(), name='leave-match'),
     path('join-match/', PlayerJoin.as_view(),name='join-match'),
     path('roomdetail/<int:pk>', RoomDetail.as_view(),name='roomdetail')
 ]
+
+
