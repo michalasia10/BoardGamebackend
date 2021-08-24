@@ -40,6 +40,9 @@ class Game(models.Model):
     def __str__(self):
         return str(self.name)
 
+    def without_finished(self):
+        return Match.objects.filter(game=self,status__in=('ACTIVE','CREATED'))
+
 
 class Match(models.Model):
     class StatusInGame(models.TextChoices):
@@ -64,6 +67,8 @@ class Match(models.Model):
 
     def __str__(self):
         return str(self.game)
+
+
 
 
 
