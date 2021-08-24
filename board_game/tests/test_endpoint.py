@@ -3,10 +3,11 @@ from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
 from ..models import Match, Game, Project, User, Player
-from ..serializers import MatchSerializer, CreateMatchSerializer, RoomSerializer, PlayersSerializerDetail, \
-    GameSerializer, UserSerializerGet, UserSerializerPost
+from ..serializers import MatchSerializer, CreateMatchSerializer, RoomSerializerWithoutFinished,RoomSerializerWithAllStates\
+    , PlayersSerializerDetail, GameSerializer, UserSerializerGet, UserSerializerPost
 from random import choice
 from django.shortcuts import get_object_or_404
+from .test_modules.StatusChecker import StatusChecker
 
 # initialize the APIClient app
 client = Client()
@@ -97,7 +98,8 @@ class ActionsOnMatchesObjects(TestCase):
                                         name='kółko i krzyżyk',
                                         imgUrl='https://image.freepik.com/darmowe-wektory/gra-tic-tac-toe_97886-854.jpg')
         self.match = Match.objects.create(game=self.game,
-                                          maxPlayers=2)
+                                          maxPlayers=2,
+                                          status='FINISHED')
         self.user1 = User.objects.create(username=choice(names) + choice(numbers))
         self.user2 = User.objects.create(username=choice(names) + choice(numbers))
         self.player1 = Player.objects.create(match=self.match,
@@ -110,7 +112,7 @@ class ActionsOnMatchesObjects(TestCase):
     def test_get_all_matches(self):
         response = client.get(reverse('allmatches'))
         matches = Game.objects.all()
-        serializer = RoomSerializer(matches, many=True)
+        serializer = RoomSerializerWithAllStates(matches, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -167,14 +169,37 @@ class ActionsOnMatchesObjects(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     # endpoint : '/matches/<int:pk>'
-    def test_get_valid_game_with_type(self):
+    def test_get_valid_game_with_type_without_finished(self):
         response = client.get(
             reverse('matches', kwargs={'pk': self.game.pk})
         )
         game = get_object_or_404(Game, pk=self.game.pk)
-        serializer = RoomSerializer(game)
+        serializer = RoomSerializerWithoutFinished(game)
+        statusChecker = StatusChecker(serializer.data)
+        statusNoFinished:bool = statusChecker.check_is_any_finished_status()
+        self.assertEqual(False,statusNoFinished)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
+
+
+    # endpoint : '/match-history'
+    def test_get_valid_matches_one_type(self):
+        response = client.get(
+            reverse('match-history', kwargs={'pk': self.game.pk})
+        )
+        game = get_object_or_404(Game, pk=self.game.pk)
+        serializer = RoomSerializerWithAllStates(game)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
+
+    def test_check_if_matches_is_different_then_match_history(self):
+        responseMatches = client.get(
+            reverse('matches', kwargs={'pk': self.game.pk})
+        )
+        responseMatchHistory = client.get(
+            reverse('match-history', kwargs={'pk': self.game.pk})
+        )
+        self.assertNotEqual(responseMatches,responseMatchHistory)
 
 
 # endpoint : '/register
