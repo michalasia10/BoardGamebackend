@@ -107,8 +107,20 @@ class MatchSerializer(serializers.ModelSerializer):
         ]
 
 
-class RoomSerializer(serializers.ModelSerializer):
+class RoomSerializerWithAllStates(serializers.ModelSerializer):
     matches = MatchSerializer(many=True)
+
+    class Meta:
+        model = Game
+        fields = (
+            'id',
+            'name',
+            'matches',
+        )
+
+
+class RoomSerializerWithoutFinished(serializers.ModelSerializer):
+    matches = MatchSerializer(many=True, source='without_finished')
 
     class Meta:
         model = Game
