@@ -1,6 +1,3 @@
-import json
-
-from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework import generics
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
@@ -13,8 +10,7 @@ from .serializers import CategorySerializer, GameSerializer, UserSerializerGet, 
 from django.shortcuts import get_object_or_404
 from .multiserializer.multiserializer import MethodSerializerView
 from django.db import IntegrityError
-from django.db.models import Q,Exists
-from django.core import serializers
+
 
 class CategoryList(generics.ListAPIView):
     queryset = Project.objects.all()
@@ -41,28 +37,25 @@ class CreateMatch(generics.ListCreateAPIView):
     serializer_class = CreateMatchSerializer
 
 
-class RoomList(APIView):
-    def get(self, request, pk):
-        game = get_object_or_404(Game, pk=pk)
-        serializer = RoomSerializerWithAllStates(game)
-        print(serializer.data)
-        return Response(serializer.data)
+# class RoomList(APIView):
+#     def get(self, request, pk,**kwargs):
+#         game = get_object_or_404(Game, pk=pk)
+#         serializer = RoomSerializerWithAllStates(game)
+#         print(kwargs)
+#         return Response(serializer.data)
 
-class MatchesUnFinshed(APIView):
-    def get(self, request, pk):
-        game = get_object_or_404(Game,pk=pk)
-        serializer = RoomSerializerWithoutFinished(game)
-        print(serializer.data)
-        return Response(serializer.data)
-
-
+# class MatchesUnFinshed(APIView):
+#     def get(self, request, pk):
+#         game = get_object_or_404(Game,pk=pk)
+#         serializer = RoomSerializerWithoutFinished(game)
+#         print(serializer.data)
+#         return Response(serializer.data)
 
 
 
-
-class AllMatches(generics.ListAPIView):
-    queryset = Game.objects.all()
-    serializer_class = RoomSerializerWithAllStates
+# class AllMatches(generics.ListAPIView):
+#     queryset = Game.objects.all()
+#     serializer_class = RoomSerializerWithAllStates
 
 
 class PlayerDelete(APIView):

@@ -44,6 +44,7 @@ class Game(models.Model):
         return Match.objects.filter(game=self,status__in=('ACTIVE','CREATED'))
 
 
+
 class Match(models.Model):
     class StatusInGame(models.TextChoices):
         CREATED = 'CREATED', 'CREATED'
@@ -67,8 +68,6 @@ class Match(models.Model):
 
     def __str__(self):
         return str(self.game)
-
-
 
 
 
