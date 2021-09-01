@@ -7,3 +7,4 @@ urlpatterns = [
         path('match-history/<int:gameId>', MatchesHistory.as_view(),name='match-history'),
         path('match-history/<int:userId>/<int:gameId>', MatchesHistory.as_view(),name='match-history'),
 ]
+
